@@ -1,30 +1,29 @@
 import React, { useEffect, useState } from "react";
-import UserService from "../../services/UserService";
+import ProjectService from "../../services/ProjectService";
 import Button from "../Button/Button";
-import UserDelete from "../Users/UserDelete";
 
-const UserList = () => {
-  const [users, setUsers] = useState([]);
+const ProjectList = () => {
+  const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    clientList();
+    projectList();
   }, []);
 
-  const clientList = () => {
-    UserService.getAllUsers().then((response) => {
-      setUsers(response.data);
+  const projectList = () => {
+    ProjectService.getAllProjects().then((response) => {
+      setProjects(response.data);
     });
   };
 
   return (
     <section className="w-[70%] mx-auto">
       <h2 className="flex justify-center my-8 text-3xl font-semibold">
-        User List
+        Project List
       </h2>
       <div className="flex justify-between items-center my-6">
         <Button
-          text="Add User"
-          route="/users/register"
+          text="Add Project"
+          route="/projects/register"
           colorClass="bg-green-500 text-white hover:bg-green-600"
         />
 
@@ -47,46 +46,46 @@ const UserList = () => {
               Name
             </th>
             <th className="border border-gray-300 px-4 py-2" scope="col">
-              Last Name
+              Starting date
             </th>
             <th className="border border-gray-300 px-4 py-2" scope="col">
-              Email
+              Finished Date
             </th>
             <th className="border border-gray-300 px-4 py-2" scope="col">
-              Role
+              Status
+            </th>
+            <th className="border border-gray-300 px-4 py-2" scope="col">
+              Task type
             </th>
             <th className="border border-gray-300 px-4 py-2" scope="col">
               Actions
             </th>
           </tr>
-        </thead>
 
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <td className="border border-gray-300 px-4 py-2">{user.name}</td>
+          <tbody>
+          {projects.map((project) => (
+            <tr key={project.id}>
+              <td className="border border-gray-300 px-4 py-2">{project.name}</td>
               <td className="border border-gray-300 px-4 py-2">
-                {user.lastName}
+                {project.startingDate}
               </td>
-              <td className="border border-gray-300 px-4 py-2">{user.email}</td>
-              <td className="border border-gray-300 px-4 py-2">{user.role}</td>
+              <td className="border border-gray-300 px-4 py-2">{project.finishedDate}</td>
+              <td className="border border-gray-300 px-4 py-2">{project.status}</td>
+              <td className="border border-gray-300 px-4 py-2">{project.taskType}</td>
               <td className="border border-gray-300 py-2 flex justify-around">
                 <Button
-                  text="Update User"
-                  route={`/users/update/${user.id}`}
+                  text="Update Project"
+                  route={`/projects/update/${project.id}`}
                   colorClass="bg-yellow-500 text-white hover:bg-yellow-600"
-                />
-                <UserDelete
-                  userEmail={user.email}
-                  onDelete={clientList} // Se pasa la función para actualizar la lista
                 />
               </td>
             </tr>
           ))}
         </tbody>
+        </thead>
       </table>
     </section>
   );
 };
 
-export default UserList;
+export default ProjectList;
