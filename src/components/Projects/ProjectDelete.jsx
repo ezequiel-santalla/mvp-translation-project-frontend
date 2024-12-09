@@ -1,9 +1,9 @@
 import React from "react";
-import UserService from "../../services/UserService";
+import ProjectService from "../../services/ProjectService";
 
-const UserDelete = ({ userEmail, onDelete }) => {
+const ProjectDelete = ({ projectId, onDelete }) => {
   const handleDelete = () => {
-    UserService.deleteUser(userEmail)
+    ProjectService.deleteProject(projectId)
       .then((response) => {
         console.log(response.data);
         onDelete(); // Llamada a la función pasada como prop para actualizar la lista
@@ -23,4 +23,4 @@ const UserDelete = ({ userEmail, onDelete }) => {
   );
 };
 
-export default UserDelete;
+export default ProjectDelete;

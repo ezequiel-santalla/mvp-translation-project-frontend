@@ -6,6 +6,14 @@ class ProjectService {
   getAllProjects() {
     return axios.get(PROJECT_BASE_REST_API_URL);
   }
+
+  deleteProject(projectId) {
+    return axios.delete(`${PROJECT_BASE_REST_API_URL}/${projectId}`);
+  }
+
+  getProjectById(projectId) {
+    return axios.get(`${PROJECT_BASE_REST_API_URL}/${projectId}`);
+  }
 }
 
 export default new ProjectService();

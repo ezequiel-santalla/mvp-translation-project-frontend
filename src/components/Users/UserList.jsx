@@ -1,23 +1,29 @@
 import React, { useEffect, useState } from "react";
-import UserService from "../../services/UserService";
+import { Link } from "react-router-dom"; // Importa el componente Link
+import UserService from "../../services/UserService"; // Asegúrate de tener el servicio adecuado
 import Button from "../Button/Button";
-import UserDelete from "../Users/UserDelete";
+import UserDelete from "../Users/UserDelete"; // Si tienes un componente para eliminar usuarios
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    clientList();
+    userList();
   }, []);
 
-  const clientList = () => {
-    UserService.getAllUsers().then((response) => {
-      setUsers(response.data);
-    });
+  const userList = () => {
+    UserService.getAllUsers()
+      .then((response) => {
+        console.log("Users data:", response.data);
+        setUsers(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching users:", error);
+      });
   };
 
   return (
-    <section className="w-[70%] mx-auto">
+    <section className="w-[80%] mx-auto">
       <h2 className="flex justify-center my-8 text-3xl font-semibold">
         User List
       </h2>
@@ -44,13 +50,19 @@ const UserList = () => {
         <thead className="bg-gray-200">
           <tr>
             <th className="border border-gray-300 px-4 py-2" scope="col">
+              Email
+            </th>
+            <th className="border border-gray-300 px-4 py-2" scope="col">
               Name
             </th>
             <th className="border border-gray-300 px-4 py-2" scope="col">
-              Last Name
+              Last name
             </th>
             <th className="border border-gray-300 px-4 py-2" scope="col">
-              Email
+              Identity Number
+            </th>
+            <th className="border border-gray-300 px-4 py-2" scope="col">
+              Cellphone
             </th>
             <th className="border border-gray-300 px-4 py-2" scope="col">
               Role
@@ -60,25 +72,32 @@ const UserList = () => {
             </th>
           </tr>
         </thead>
-
         <tbody>
           {users.map((user) => (
             <tr key={user.id}>
+              <td className="border border-gray-300 px-4 py-2 text-blue-600 cursor-pointer hover:underline">
+                <Link to={`/users/${user.email}`}>{user.email}</Link>{" "}
+              </td>
               <td className="border border-gray-300 px-4 py-2">{user.name}</td>
               <td className="border border-gray-300 px-4 py-2">
                 {user.lastName}
               </td>
-              <td className="border border-gray-300 px-4 py-2">{user.email}</td>
+              <td className="border border-gray-300 px-4 py-2">
+                {user.identityNumber}
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                {user.cellphone}
+              </td>
               <td className="border border-gray-300 px-4 py-2">{user.role}</td>
               <td className="border border-gray-300 py-2 flex justify-around">
                 <Button
-                  text="Update User"
-                  route={`/users/update/${user.id}`}
+                  text="Update"
+                  route={`/users/update/${user.email}`}
                   colorClass="bg-yellow-500 text-white hover:bg-yellow-600"
                 />
                 <UserDelete
                   userEmail={user.email}
-                  onDelete={clientList} // Se pasa la función para actualizar la lista
+                  onDelete={userList} // Actualiza la lista después de eliminar un usuario
                 />
               </td>
             </tr>
