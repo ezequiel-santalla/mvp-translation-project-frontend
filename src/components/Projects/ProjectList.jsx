@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom"; // Importa el componente Link
 import { format } from "date-fns";
 import ProjectService from "../../services/ProjectService";
-import Button from "../Button/Button";
-import ProjectDelete from "../Projects/ProjectDelete";
+import { Button } from "../Button/Button";
+import { ProjectDelete } from "../Projects/ProjectDelete";
 
-const ProjectList = () => {
+export const ProjectList = () => {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
@@ -33,11 +33,10 @@ const ProjectList = () => {
         Project List
       </h2>
       <div className="flex justify-between items-center my-6">
-        <Button
+        <Link to="/projects/register"><Button
           text="Add Project"
-          route="/projects/register"
           colorClass="bg-green-500 text-white hover:bg-green-600"
-        />
+        /></Link>
 
         <div className="flex items-center space-x-4">
           <Button

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import verbaliaLogo from "../../img/verbaliaLogo.webp";
 
-const NavBar = () => {
+export const NavBar = () => {
   return (
     <header className="bg-[#023144] flex items-center justify-between p-6">
       <Link to="/">
@@ -25,6 +25,4 @@ const NavBar = () => {
     </header>
   );
 };
-
-export default NavBar;
 

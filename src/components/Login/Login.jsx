@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
-const Login = () => {
+export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   const handleSubmit = () => {
-    event.preventDefault();
+    preventDefault();
 
     if (!email || !password) {
       setError('Por favor ingrese su correo electrónico y contraseña.');
@@ -62,5 +62,3 @@ const Login = () => {
     </div>
   );
 };
-
-export default Login;

@@ -1,7 +1,7 @@
 import React from "react";
 import UserService from "../../services/UserService";
 
-const UserDelete = ({ userEmail, onDelete }) => {
+export const UserDelete = ({ userEmail, onDelete }) => {
   const handleDelete = () => {
     UserService.deleteUser(userEmail)
       .then((response) => {
@@ -22,5 +22,3 @@ const UserDelete = ({ userEmail, onDelete }) => {
     </button>
   );
 };
-
-export default UserDelete;

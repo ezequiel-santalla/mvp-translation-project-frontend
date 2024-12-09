@@ -11,16 +11,16 @@ class UserService {
     return axios.post(`${USER_BASE_REST_API_URL}/register`, user);
   }
 
-  getUserByEmail(clientEmail) {
-    return axios.get(`${USER_BASE_REST_API_URL}/${clientEmail}`);
+  getUserByEmail(email) {
+    return axios.get(`${USER_BASE_REST_API_URL}/email/${email}`);
   }
 
   updateUser(user) {
     return axios.put(`${USER_BASE_REST_API_URL}/update/${user.email}`, user);
   }
 
-  deleteUser(clientEmail) {
-    return axios.delete(`${USER_BASE_REST_API_URL}/${clientEmail}`);
+  deleteUser(email) {
+    return axios.delete(`${USER_BASE_REST_API_URL}/${email}`);
   }
 }
 

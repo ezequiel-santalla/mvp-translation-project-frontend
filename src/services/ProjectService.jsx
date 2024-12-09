@@ -7,6 +7,10 @@ class ProjectService {
     return axios.get(PROJECT_BASE_REST_API_URL);
   }
 
+  registerProject(project) {
+    return axios.post(`${PROJECT_BASE_REST_API_URL}/register`, project);
+  }
+
   deleteProject(projectId) {
     return axios.delete(`${PROJECT_BASE_REST_API_URL}/${projectId}`);
   }

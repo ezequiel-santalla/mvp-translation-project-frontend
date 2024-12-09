@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom"; // Importa el componente Link
-import UserService from "../../services/UserService"; // Asegúrate de tener el servicio adecuado
-import Button from "../Button/Button";
-import UserDelete from "../Users/UserDelete"; // Si tienes un componente para eliminar usuarios
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import UserService from "../../services/UserService";
+import { Button } from "../Button/Button";
+import { UserDelete } from "../Users/UserDelete";
 
-const UserList = () => {
+export const UserList = () => {
   const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    userList();
-  }, []);
 
   const userList = () => {
     UserService.getAllUsers()
@@ -22,26 +18,44 @@ const UserList = () => {
       });
   };
 
+  const handleDelete = (userEmail) => {
+    UserService.deleteUser(userEmail)
+      .then(() => {
+        console.log("User deleted");
+        userList();
+      })
+      .catch((error) => {
+        console.error("Error deleting user:", error);
+      });
+  };
+
+  useEffect(() => {
+    userList();
+  }, []);
+
   return (
     <section className="w-[80%] mx-auto">
       <h2 className="flex justify-center my-8 text-3xl font-semibold">
         User List
       </h2>
       <div className="flex justify-between items-center my-6">
-        <Button
-          text="Add User"
-          route="/users/register"
-          colorClass="bg-green-500 text-white hover:bg-green-600"
-        />
+        <Link to="/users/register">
+          <Button
+            text="Add User"
+            colorClass="bg-green-500 text-white hover:bg-green-600"
+          />
+        </Link>
 
         <div className="flex items-center space-x-4">
           <Button
             text="Filter"
             colorClass="bg-blue-500 text-white hover:bg-blue-600"
+            onClick={() => {} /* Implement filter logic if needed */}
           />
           <Button
             text="Reset filter"
             colorClass="bg-gray-500 text-white hover:bg-gray-600"
+            onClick={() => {} /* Implement reset logic if needed */}
           />
         </div>
       </div>
@@ -76,7 +90,7 @@ const UserList = () => {
           {users.map((user) => (
             <tr key={user.id}>
               <td className="border border-gray-300 px-4 py-2 text-blue-600 cursor-pointer hover:underline">
-                <Link to={`/users/${user.email}`}>{user.email}</Link>{" "}
+                <Link to={`/users/email/${user.email}`}>{user.email}</Link>
               </td>
               <td className="border border-gray-300 px-4 py-2">{user.name}</td>
               <td className="border border-gray-300 px-4 py-2">
@@ -90,14 +104,16 @@ const UserList = () => {
               </td>
               <td className="border border-gray-300 px-4 py-2">{user.role}</td>
               <td className="border border-gray-300 py-2 flex justify-around">
-                <Button
-                  text="Update"
-                  route={`/users/update/${user.email}`}
-                  colorClass="bg-yellow-500 text-white hover:bg-yellow-600"
-                />
+                <Link to={`/users/update/${user.email}`}>
+                  <Button
+                    text="Update"
+                    colorClass="bg-yellow-500 text-white hover:bg-yellow-600"
+                  />
+                </Link>
+
                 <UserDelete
                   userEmail={user.email}
-                  onDelete={userList} // Actualiza la lista después de eliminar un usuario
+                  onDelete={() => handleDelete(user.email)}
                 />
               </td>
             </tr>
@@ -107,5 +123,3 @@ const UserList = () => {
     </section>
   );
 };
-
-export default UserList;

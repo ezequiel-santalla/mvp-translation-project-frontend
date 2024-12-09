@@ -1,7 +1,7 @@
 import React from "react";
 import ProjectService from "../../services/ProjectService";
 
-const ProjectDelete = ({ projectId, onDelete }) => {
+export const ProjectDelete = ({ projectId, onDelete }) => {
   const handleDelete = () => {
     ProjectService.deleteProject(projectId)
       .then((response) => {
@@ -22,5 +22,3 @@ const ProjectDelete = ({ projectId, onDelete }) => {
     </button>
   );
 };
-
-export default ProjectDelete;
