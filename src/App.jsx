@@ -1,11 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { NavBar } from "./components/NavBar/NavBar";
 import { Login } from "./components/Login/Login"
-import { UserList } from "./components/Users/UserList";
-import { UserRegister } from "./components/Users/UserRegister";
-import { UserDetail } from "./components/Users/UserDetail";
-import { ProjectList } from "./components/Projects/ProjectList";
-import { ProjectRegister } from "./components/Projects/ProjectRegister";
+import { UserList } from "./components/User/UserList";
+import { UserRegister } from "./components/User/UserRegister";
+import { UserDetail } from "./components/User/UserDetail";
+import { ProjectList } from "./components/Project/ProjectList";
+import { ProjectRegister } from "./components/Project/ProjectRegister";
 
 const App = () => (
   <>

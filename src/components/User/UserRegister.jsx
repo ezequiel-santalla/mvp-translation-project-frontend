@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
-import UserService from "../../services/UserService";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import UserService from "../../services/UserService";
+import { Title } from "../Title/Title";
 
 export const UserRegister = () => {
+  const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
+  const [identityNumber, setIdentityNumber] = useState("");
   const [password, setPassword] = useState("");
   const [birthDate, setBirthdate] = useState("");
-  const [identityNumber, setIdentityNumber] = useState("");
   const [cellphone, setCellphone] = useState("");
   const navigate = useNavigate();
   const { userEmail } = useParams();
@@ -57,13 +58,11 @@ export const UserRegister = () => {
   const title = () => {
     if (userEmail) {
       return (
-        <h2 className="text-center my-8 text-3xl font-semibold">User Update</h2>
+        <Title title="User Update"/>
       );
     } else {
       return (
-        <h2 className="text-center my-8 text-3xl font-semibold">
-          User Registration
-        </h2>
+        <Title title="User Registration"/>
       );
     }
   };
@@ -72,7 +71,6 @@ export const UserRegister = () => {
     <section className="w-[35%] mx-auto bg-white">
       {title()}
       <form onSubmit={registerUser} className="space-y-6" autoComplete="on">
-        {/* Name */}
         <div>
           <label
             className="block text-sm font-medium text-gray-700"
@@ -91,7 +89,6 @@ export const UserRegister = () => {
           />
         </div>
 
-        {/* Last Name */}
         <div>
           <label
             className="block text-sm font-medium text-gray-700"
@@ -110,7 +107,6 @@ export const UserRegister = () => {
           />
         </div>
 
-        {/* Email */}
         <div>
           <label
             className="block text-sm font-medium text-gray-700"
@@ -129,7 +125,6 @@ export const UserRegister = () => {
           />
         </div>
 
-        {/* Password */}
         <div>
           <label
             className="block text-sm font-medium text-gray-700"
@@ -148,7 +143,6 @@ export const UserRegister = () => {
           />
         </div>
 
-        {/* Birthdate */}
         <div>
           <label
             className="block text-sm font-medium text-gray-700"
@@ -166,7 +160,6 @@ export const UserRegister = () => {
           />
         </div>
 
-        {/* Identity Number */}
         <div>
           <label
             className="block text-sm font-medium text-gray-700"
@@ -185,7 +178,6 @@ export const UserRegister = () => {
           />
         </div>
 
-        {/* Cellphone */}
         <div>
           <label
             className="block text-sm font-medium text-gray-700"
@@ -204,7 +196,6 @@ export const UserRegister = () => {
           />
         </div>
 
-        {/* Buttons */}
         <div className="flex justify-end space-x-4">
           <Link to="/users">
             <button
