@@ -28,15 +28,17 @@ export const ProjectList = () => {
   };
 
   return (
-    <section className="w-[80%] mx-auto">
+    <section className="w-[90%] mx-auto">
       <h2 className="flex justify-center my-8 text-3xl font-semibold">
         Project List
       </h2>
       <div className="flex justify-between items-center my-6">
-        <Link to="/projects/register"><Button
-          text="Add Project"
-          colorClass="bg-green-500 text-white hover:bg-green-600"
-        /></Link>
+        <Link to="/projects/register">
+          <Button
+            text="Add Project"
+            colorClass="bg-green-500 text-white hover:bg-green-600"
+          />
+        </Link>
 
         <div className="flex items-center space-x-4">
           <Button
