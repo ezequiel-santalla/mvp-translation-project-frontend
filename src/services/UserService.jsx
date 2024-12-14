@@ -2,7 +2,7 @@ import axios from "axios";
 
 const USER_BASE_REST_API_URL = "http://localhost:8080/users";
 
-class UserService {
+export class UserService {
   getAllUsers() {
     return axios.get(USER_BASE_REST_API_URL);
   }
@@ -21,6 +21,10 @@ class UserService {
 
   deleteUser(email) {
     return axios.delete(`${USER_BASE_REST_API_URL}/${email}`);
+  }
+
+  getProjectsByUserEmail(email) {
+    return axios.get(`${USER_BASE_REST_API_URL}/projects/${email}`);
   }
 }
 

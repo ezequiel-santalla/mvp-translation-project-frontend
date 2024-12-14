@@ -6,6 +6,8 @@ import { UserRegister } from "./components/User/UserRegister";
 import { UserDetail } from "./components/User/UserDetail";
 import { ProjectList } from "./components/Project/ProjectList";
 import { ProjectRegister } from "./components/Project/ProjectRegister";
+import { LanguagePairList } from "./components/LanguagePairs/LanguagePairList";
+
 
 const App = () => (
   <>
@@ -17,8 +19,11 @@ const App = () => (
         <Route path="/users/register" element={<UserRegister />} />
         <Route path="users/update/:email" element={<UserRegister />} />
         <Route path="/users/email/:email" element={<UserDetail />} />
+        <Route path="/users/projects/:email" element={<ProjectList />} />
         <Route path="/projects" element={<ProjectList />} />
         <Route path="/projects/register" element={<ProjectRegister />}/>
+        <Route path="/language-pairs" element={<LanguagePairList />} />
+        <Route path="/language-pairs/:email" element={<LanguagePairList />} />
         {/* <Route path="/projects/:id" element={ProjectDetail} /> */}
       </Routes>
     </BrowserRouter>

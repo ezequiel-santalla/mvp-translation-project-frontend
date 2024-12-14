@@ -20,6 +20,11 @@ export const NavBar = () => {
               Projects
             </Link>
           </li>
+          <li>
+            <Link to="/language-pairs" className="text-lg">
+              Language Pairs
+            </Link>
+          </li>
         </ul>
       </nav>
     </header>

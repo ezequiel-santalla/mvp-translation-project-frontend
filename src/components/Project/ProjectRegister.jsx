@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Title } from "../Title/Title";
 import ProjectService from "../../services/ProjectService";
+import { Button } from "../Button/Button";
 
 export const ProjectRegister = () => {
   const [name, setName] = useState("");
@@ -42,9 +44,8 @@ export const ProjectRegister = () => {
 
   return (
     <section className="w-[35%] mx-auto bg-white">
-      <h2 className="text-center my-8 text-3xl font-semibold">
-        Project Registration
-      </h2>
+      <Title title="Project Registration" />
+
       <form onSubmit={handleProjectSubmit} className="space-y-6">
         <div>
           <label
@@ -63,6 +64,7 @@ export const ProjectRegister = () => {
             required
           />
         </div>
+
         <div>
           <label
             className="block text-sm font-medium text-gray-700"
@@ -79,6 +81,7 @@ export const ProjectRegister = () => {
             required
           />
         </div>
+
         <div>
           <label
             className="block text-sm font-medium text-gray-700"
@@ -95,6 +98,7 @@ export const ProjectRegister = () => {
             required
           />
         </div>
+
         <div>
           <label
             className="block text-sm font-medium text-gray-700"
@@ -112,8 +116,12 @@ export const ProjectRegister = () => {
             required
           />
         </div>
+
         <div>
-          <label className="block text-sm font-medium text-gray-700" htmlFor="taskType">
+          <label
+            className="block text-sm font-medium text-gray-700"
+            htmlFor="taskType"
+          >
             Task Type
           </label>
           <select
@@ -135,6 +143,7 @@ export const ProjectRegister = () => {
             <option value="TRANSCREATION">Transcreation</option>
           </select>
         </div>
+
         <div>
           <label className="block text-sm font-medium" htmlFor="languagePair">
             Language Pair
@@ -149,6 +158,7 @@ export const ProjectRegister = () => {
             required
           />
         </div>
+
         <div>
           <label
             className="block text-sm font-medium text-gray-700"
@@ -168,6 +178,7 @@ export const ProjectRegister = () => {
             <option value="Rate Based">Rate Based</option>
           </select>
         </div>
+
         {paymentType === "Flat Fee" && (
           <div>
             <label
@@ -225,14 +236,13 @@ export const ProjectRegister = () => {
             </div>
           </>
         )}
+
         <div className="flex justify-end space-x-4">
           <Link to="/projects">
-            <button
-              type="button"
-              className="py-2 px-4 bg-gray-500 text-white rounded-md hover:bg-gray-600"
-            >
-              Cancel
-            </button>
+            <Button
+              text="Cancel"
+              colorClass="bg-gray-500 text-white hover:bg-gray-600"
+            />
           </Link>
           <button
             type="submit"

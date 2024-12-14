@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import { Button } from "../Button/Button";
 import { Title } from "../Title/Title";
 import { FilterActions } from "../FilterActions/FilterActions";
-import { Table } from "../Table/Table"
-import { UserRow } from "../User/UserRow"
+import { Table } from "../Table/Table";
+import { UserRow } from "../User/UserRow";
+import { useDeleteConfirmation } from "../../hooks/useDeleteConfirmation";
 import UserService from "../../services/UserService";
 
 export const UserList = () => {
@@ -20,23 +21,24 @@ export const UserList = () => {
       });
   };
 
-  const handleDelete = (userEmail) => {
+  const { handleDelete } = useDeleteConfirmation((userEmail) => {
     UserService.deleteUser(userEmail)
       .then(() => {
         userList();
       })
       .catch((error) => {
         console.error("Error deleting user:", error);
+        Swal.fire("Error!", "There was an issue deleting the user.", "error");
       });
-  };
+  });
 
   const headers = [
-    "Email",
     "Name",
     "Last name",
+    "Email",
     "Identity Number",
     "Cellphone",
-    "Role",
+    "Projects",
     "Actions",
   ];
 
@@ -47,6 +49,7 @@ export const UserList = () => {
   return (
     <section className="w-[90%] mx-auto">
       <Title title="User List" />
+
       <div className="flex justify-between items-center my-6">
         <Link to="/users/register">
           <Button
@@ -54,8 +57,9 @@ export const UserList = () => {
             colorClass="bg-green-500 text-white hover:bg-green-600"
           />
         </Link>
-        <FilterActions />
+        <FilterActions columns={headers}/>
       </div>
+
       <Table
         headers={headers}
         data={users}

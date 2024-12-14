@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import UserService from "../../services/UserService"; // Asegúrate de tener el servicio adecuado
+import UserService from "../../services/UserService";
 
 export const UserDetail = () => {
-  const { email } = useParams(); // Obtener el email desde la URL
+  const { email } = useParams();
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    console.log("Email param changed:", email);
     getUserByEmail();
   }, [email]);
 

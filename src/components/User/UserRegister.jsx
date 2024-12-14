@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import UserService from "../../services/UserService";
 import { Title } from "../Title/Title";
+import UserService from "../../services/UserService";
+import { Button } from "../Button/Button";
 
 export const UserRegister = () => {
   const [email, setEmail] = useState("");
@@ -57,13 +58,9 @@ export const UserRegister = () => {
 
   const title = () => {
     if (userEmail) {
-      return (
-        <Title title="User Update"/>
-      );
+      return <Title title="User Update" />;
     } else {
-      return (
-        <Title title="User Registration"/>
-      );
+      return <Title title="User Registration" />;
     }
   };
 
@@ -198,19 +195,15 @@ export const UserRegister = () => {
 
         <div className="flex justify-end space-x-4">
           <Link to="/users">
-            <button
-              type="reset"
-              className="px-6 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
-            >
-              Cancel
-            </button>
+            <Button
+              text="Cancel"
+              colorClass="bg-gray-500 text-white hover:bg-gray-600"
+            />
           </Link>
-          <button
-            type="submit"
-            className="px-6 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700"
-          >
-            Register
-          </button>
+          <Button
+            text="Register"
+            colorClass="bg-indigo-600 text-white hover:bg-indigo-700"
+          />
         </div>
       </form>
     </section>
