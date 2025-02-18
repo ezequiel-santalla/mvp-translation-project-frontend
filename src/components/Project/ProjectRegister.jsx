@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Title } from "../Title/Title";
-import ProjectService from "../../services/ProjectService";
 import { Button } from "../Button/Button";
+import { format } from "date-fns";
+import ProjectService from "../../services/ProjectService";
 
 export const ProjectRegister = () => {
   const [name, setName] = useState("");
@@ -10,7 +11,8 @@ export const ProjectRegister = () => {
   const [deadline, setDeadline] = useState("");
   const [filePath, setFilePath] = useState("");
   const [taskType, setTaskType] = useState("");
-  const [languagePair, setLanguagePair] = useState("");
+  const [sourceLanguage, setSourceLanguage] = useState("");
+  const [targetLanguage, setTargetLanguage] = useState("");
   const [paymentType, setPaymentType] = useState("");
   const [flatFee, setFlatFee] = useState("");
   const [rate, setRate] = useState("");
@@ -20,10 +22,17 @@ export const ProjectRegister = () => {
   const handleProjectSubmit = (e) => {
     e.preventDefault();
 
+    const formattedDeadline = format(new Date(deadline), "yyyy-MM-dd'T'HH:mm:ss");
+
+    const languagePair = {
+      sourceLanguage,
+      targetLanguage
+    };
+
     const project = {
       name,
       description,
-      deadline,
+      deadline: formattedDeadline,
       filePath,
       taskType,
       languagePair,
@@ -38,7 +47,7 @@ export const ProjectRegister = () => {
         navigate("/projects");
       })
       .catch((error) => {
-        console.error("Error creating project:", error);
+        console.log(error.response.data);
       });
   };
 
@@ -145,16 +154,31 @@ export const ProjectRegister = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium" htmlFor="languagePair">
-            Language Pair
+          <label className="block text-sm font-medium" htmlFor="sourceLanguage">
+            Source Language
           </label>
           <input
-            id="languagePair"
+            id="sourceLanguage"
             type="text"
             className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-            value={languagePair}
-            onChange={(e) => setLanguagePair(e.target.value)}
-            placeholder="Enter language pair"
+            value={sourceLanguage}
+            onChange={(e) => setSourceLanguage(e.target.value)}
+            placeholder="Enter source language"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium" htmlFor="targetLanguage">
+            Target Language
+          </label>
+          <input
+            id="targetLanguage"
+            type="text"
+            className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+            value={targetLanguage}
+            onChange={(e) => setTargetLanguage(e.target.value)}
+            placeholder="Enter target language"
             required
           />
         </div>

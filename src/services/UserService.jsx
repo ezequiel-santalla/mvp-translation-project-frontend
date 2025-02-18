@@ -11,13 +11,13 @@ export class UserService {
     return axios.post(`${USER_BASE_REST_API_URL}/register`, user);
   }
 
-  getUserByEmail(email) {
-    return axios.get(`${USER_BASE_REST_API_URL}/email/${email}`);
+  getUserById(id) {
+    return axios.get(`${USER_BASE_REST_API_URL}/${id}`);
   }
 
-  updateUser(user) {
-    return axios.put(`${USER_BASE_REST_API_URL}/update/${user.email}`, user);
-  }
+  updateUser(email, updatedUser) {
+    return axios.put(`${USER_BASE_REST_API_URL}/update?email=${email}`, updatedUser);
+  };
 
   deleteUser(email) {
     return axios.delete(`${USER_BASE_REST_API_URL}/${email}`);
@@ -25,6 +25,10 @@ export class UserService {
 
   getProjectsByUserEmail(email) {
     return axios.get(`${USER_BASE_REST_API_URL}/projects/${email}`);
+  }
+
+  getMyProjects() {
+    return axios.get(`${USER_BASE_REST_API_URL}/my-projects`);
   }
 }
 

@@ -9,14 +9,14 @@ export const ProjectRow = ({ item, onDelete }) => {
 
   return (
     <tr>
-      <td className="border border-gray-300 px-4">{item.name}</td>
-      <td className="border border-gray-300 px-4">
+      <td className="border border-gray-300 px-4 py-2">{item.name}</td>
+      <td className="border border-gray-300 px-4 py-2">
         {item.translator
           ? `${item.translator.name} ${item.translator.lastName}`
           : "N/A"}
       </td>
-      <td className="border border-gray-300 px-4">{item.taskType}</td>
-      <td className="border border-gray-300 px-4 py-4">
+      <td className="border border-gray-300 px-4 py-2">{item.taskType}</td>
+      <td className="border border-gray-300 px-4 py-2">
         <div className="flex justify-around gap-2">
           <LanguageFlag countryCode={item.languagePair.sourceLanguage.flagCode} className="w-8 h-8" />
           <span className="flex items-center">
@@ -28,14 +28,14 @@ export const ProjectRow = ({ item, onDelete }) => {
         </div>
       </td>
 
-      <td className="border border-gray-300 px-4">{item.status}</td>
-      <td className="border border-gray-300 px-4">
+      <td className="border border-gray-300 px-4 py-2">{item.status}</td>
+      <td className="border border-gray-300 px-4 py-2">
         {formatDateTime(item.startingDate)}
       </td>
-      <td className="border border-gray-300 px-4">
+      <td className="border border-gray-300 px-4 py-2">
         {formatDateTime(item.finishedDate)}
       </td>
-      <td className="border border-gray-300 px-4">
+      <td className="border border-gray-300 px-4 py-2">
         <div className="flex justify-around gap-2">
           <Link to={`/projects/update/${item.id}`}>
             <Button

@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Title } from "../Title/Title";
-import UserService from "../../services/UserService";
 import { Button } from "../Button/Button";
+import UserService from "../../services/UserService";
 
 export const UserRegister = () => {
   const [email, setEmail] = useState("");
@@ -13,7 +13,6 @@ export const UserRegister = () => {
   const [birthDate, setBirthdate] = useState("");
   const [cellphone, setCellphone] = useState("");
   const navigate = useNavigate();
-  const { userEmail } = useParams();
 
   const registerUser = (e) => {
     e.preventDefault();
@@ -34,39 +33,13 @@ export const UserRegister = () => {
         navigate("/users");
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response.data);
       });
-  };
-
-  useEffect(() => {
-    if (userEmail) {
-      UserService.getUserByEmail(userEmail)
-        .then((response) => {
-          setName(response.data.name);
-          setLastName(response.data.lastName);
-          setEmail(response.data.email);
-          setPassword(response.data.password);
-          setBirthdate(response.data.birthDate);
-          setIdentityNumber(response.data.identityNumber);
-          setCellphone(response.data.cellphone);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  }, [userEmail]);
-
-  const title = () => {
-    if (userEmail) {
-      return <Title title="User Update" />;
-    } else {
-      return <Title title="User Registration" />;
-    }
   };
 
   return (
     <section className="w-[35%] mx-auto bg-white">
-      {title()}
+      <Title title="User Registration" />
       <form onSubmit={registerUser} className="space-y-6" autoComplete="on">
         <div>
           <label
@@ -200,10 +173,16 @@ export const UserRegister = () => {
               colorClass="bg-gray-500 text-white hover:bg-gray-600"
             />
           </Link>
-          <Button
-            text="Register"
-            colorClass="bg-indigo-600 text-white hover:bg-indigo-700"
-          />
+
+          <div className="flex justify-end space-x-4">
+            <button
+              type="submit"
+              onClick={(e) => registerUser(e)}
+              className="px-4 py-2 bg-indigo-600 text-white hover:bg-indigo-700 rounded-md"
+            >
+              Register
+            </button>
+          </div>
         </div>
       </form>
     </section>
