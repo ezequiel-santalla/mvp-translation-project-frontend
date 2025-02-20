@@ -13,7 +13,7 @@ export const UserRow = ({ item, onDelete }) => (
         to={{
           pathname: `/users/projects/${item.email}`,
         }}
-        state={{ name: item.name, lastName: item.lastName, id: item.id }} // Pasa el email
+        state={{ name: item.name, lastName: item.lastName, email: item.email, id: item.id }} // Pasa el email
         className="text-blue-500 hover:underline"
       >
         View Projects

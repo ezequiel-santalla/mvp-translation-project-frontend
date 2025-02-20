@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from "../configs/axiosConfig";
 
-const USER_BASE_REST_API_URL = "http://localhost:8080/users";
+const USER_BASE_REST_API_URL = "/users";
 
 export class UserService {
   getAllUsers() {
@@ -17,7 +17,7 @@ export class UserService {
 
   updateUser(email, updatedUser) {
     return axios.put(`${USER_BASE_REST_API_URL}/update?email=${email}`, updatedUser);
-  };
+  }
 
   deleteUser(email) {
     return axios.delete(`${USER_BASE_REST_API_URL}/${email}`);
@@ -28,7 +28,11 @@ export class UserService {
   }
 
   getMyProjects() {
-    return axios.get(`${USER_BASE_REST_API_URL}/my-projects`);
+    return axios.get(`${USER_BASE_REST_API_URL}/me/projects`);
+  }
+
+  getMyUser() {
+    return axios.get(`${USER_BASE_REST_API_URL}/me/user`);
   }
 }
 

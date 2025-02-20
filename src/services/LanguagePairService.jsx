@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../configs/axiosConfig";
 
 const LANGUAGE_PAIR_BASE_REST_API_URL = "http://localhost:8080/language-pairs";
 

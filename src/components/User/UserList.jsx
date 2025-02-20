@@ -12,13 +12,23 @@ export const UserList = () => {
   const [users, setUsers] = useState([]);
 
   const userList = () => {
-    UserService.getAllUsers()
+    if (localStorage.getItem("role") === "TRANSLATOR") {
+      UserService.getMyUser()
+        .then((response) => {
+          setUsers([response.data]);
+        })
+        .catch((error) => {
+          console.error("Error fetching user:", error);
+        });
+    } else {
+      UserService.getAllUsers()
       .then((response) => {
         setUsers(response.data);
       })
       .catch((error) => {
         console.error("Error fetching users:", error);
       });
+    }
   };
 
   const { handleDelete } = useDeleteConfirmation((userEmail) => {

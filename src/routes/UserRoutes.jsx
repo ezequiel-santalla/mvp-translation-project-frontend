@@ -11,6 +11,8 @@ export const UserRoutes = () => (
     <Route path={ROUTES.USER_REGISTER} element={<UserRegister />} />
     <Route path={ROUTES.USER_UPDATE} element={<UserUpdate />} />
     <Route path={ROUTES.USER_PROJECTS} element={<ProjectList />} />
+    <Route path={ROUTES.USER_LOGGED} element={<UserList />} />
+    <Route path={ROUTES.USER_LOGGED_PROJECTS} element={<ProjectList />} />
   </>
 );
 

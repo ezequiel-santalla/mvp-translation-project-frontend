@@ -8,6 +8,7 @@ import { ProjectRow } from "./ProjectRow";
 import { useDeleteConfirmation } from "../../hooks/useDeleteConfirmation";
 import ProjectService from "../../services/ProjectService";
 import UserService from "../../services/UserService";
+import Swal from "sweetalert2";
 
 export const ProjectList = () => {
   const [projects, setProjects] = useState([]);
@@ -17,22 +18,35 @@ export const ProjectList = () => {
   const { name, lastName, email } = location.state || {};
 
   const projectList = () => {
-    if (email) {
-      UserService.getProjectsByUserEmail(email)
+    if (localStorage.getItem("role") === "TRANSLATOR") {
+      UserService.getMyProjects()
         .then((response) => {
           setProjects(response.data);
+          setFilteredProjects(response.data); // Actualiza también el estado filteredProjects
         })
         .catch((error) => {
           console.error("Error fetching projects:", error);
         });
     } else {
-      ProjectService.getAllProjects()
-        .then((response) => {
-          setProjects(response.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching projects:", error);
-        });
+      if (email) {
+        UserService.getProjectsByUserEmail(email)
+          .then((response) => {
+            setProjects(response.data);
+            setFilteredProjects(response.data); // Actualiza también el estado filteredProjects
+          })
+          .catch((error) => {
+            console.error("Error fetching projects:", error);
+          });
+      } else {
+        ProjectService.getAllProjects()
+          .then((response) => {
+            setProjects(response.data);
+            setFilteredProjects(response.data); // Actualiza también el estado filteredProjects
+          })
+          .catch((error) => {
+            console.error("Error fetching projects:", error);
+          });
+      }
     }
   };
 
@@ -98,7 +112,7 @@ export const ProjectList = () => {
 
       <Table
         headers={headers}
-        data={projects}
+        data={filteredProjects} // Usa filteredProjects en lugar de projects
         RowComponent={ProjectRow}
         onDelete={handleDelete}
       />

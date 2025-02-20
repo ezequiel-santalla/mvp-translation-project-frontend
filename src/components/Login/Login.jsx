@@ -20,7 +20,7 @@ export const Login = () => {
     try {
       console.log("Formulario enviado con éxito", { email, password });
 
-      const token = await LoginService.getLogin({ email, password });
+      const token = await LoginService.postLogin({ email, password });
       localStorage.setItem("token", token); // Guarda el token en localStorage
 
       // Decodificar el token para obtener el role
@@ -30,11 +30,12 @@ export const Login = () => {
       localStorage.setItem("role", role); // Guarda el role en localStorage para usarlo en los endpoints
 
       console.log("Rol del usuario:", role); // Debugging
+      console.log("Token decodificado:", decodedToken); // Debugging
 
       if (role === "ADMIN" | role === "ROOT") {
         navigate("/projects");
       } else {
-        navigate("/users/my-projects");
+        navigate("/users/me/projects");
       } // Redirige después del login
     } catch (error) {
       console.error("Error en el login:", error.message);

@@ -23,11 +23,9 @@ export const ProjectRow = ({ item, onDelete }) => {
             {item.languagePair.sourceLanguage.codeIso.toUpperCase()} -{" "}
             {item.languagePair.targetLanguage.codeIso.toUpperCase()}
           </span>
-
           <LanguageFlag countryCode={item.languagePair.targetLanguage.flagCode} className="w-8 h-8" />
         </div>
       </td>
-
       <td className="border border-gray-300 px-4 py-2">{item.status}</td>
       <td className="border border-gray-300 px-4 py-2">
         {formatDateTime(item.startingDate)}

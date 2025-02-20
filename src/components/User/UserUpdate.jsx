@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import Swal from "sweetalert2";
 import { Title } from "../Title/Title";
 import { Button } from "../Button/Button";
 import UserService from "../../services/UserService";
+import Swal from "sweetalert2";
 
 export const UserUpdate = () => {
   const [email, setEmail] = useState("");

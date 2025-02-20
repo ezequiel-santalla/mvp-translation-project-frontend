@@ -1,12 +1,14 @@
-import axios from "axios";
+import axios from "../configs/axiosConfig";
 
-const LOGIN_BASE_REST_API_URL = "http://localhost:8080/auth-user/login";
+const LOGIN_BASE_REST_API_URL = "/auth-user/login";
 
 class LoginService {
-  async getLogin(loginData) {
+  async postLogin(loginData) {
     try {
       const response = await axios.post(LOGIN_BASE_REST_API_URL, loginData);
-      return response.data; // Retorna solo el token JWT
+      const token = response.data;
+      localStorage.setItem("jwtToken", token); // Guarda el token en localStorage
+      return token;
     } catch (error) {
       if (error.response) {
         // Si el servidor responde con un error (401, 400, etc.)

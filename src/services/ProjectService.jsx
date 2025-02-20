@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from "../configs/axiosConfig";
 
-const PROJECT_BASE_REST_API_URL = "http://localhost:8080/projects";
+const PROJECT_BASE_REST_API_URL = "/projects";
 
 class ProjectService {
   getAllProjects() {
@@ -10,6 +10,10 @@ class ProjectService {
   registerProject(project) {
     return axios.post(`${PROJECT_BASE_REST_API_URL}/register`, project);
   }
+
+  updateProject(id, updatedProject) {
+    return axios.put(`${PROJECT_BASE_REST_API_URL}/update?id=${id}`, updatedProject);
+  };
 
   deleteProject(projectId) {
     return axios.delete(`${PROJECT_BASE_REST_API_URL}/${projectId}`);
