@@ -7,7 +7,9 @@ export const FilterActions = ({ columns, onFilter, onReset }) => {
   const [filterValue, setFilterValue] = useState("");
 
   const handleFilterChange = (e) => {
-    setFilterValue(e.target.value);
+    const value = e.target.value;
+    setFilterValue(value);
+    onFilter(selectedColumn, value);
   };
 
   const handleFilterClick = () => {

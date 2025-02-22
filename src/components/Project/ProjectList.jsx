@@ -19,38 +19,52 @@ export const ProjectList = () => {
   const location = useLocation();
   const { name, lastName, email } = location.state || {};
 
-  const projectList = () => {
-    if (localStorage.getItem("role") === "TRANSLATOR") {
-      UserService.getMyProjects()
-        .then((response) => {
-          setProjects(response.data);
-          setFilteredProjects(response.data); // Actualiza también el estado filteredProjects
-        })
-        .catch((error) => {
-          console.error("Error fetching projects:", error);
-        });
-    } else {
-      if (email) {
-        UserService.getProjectsByUserEmail(email)
-          .then((response) => {
-            setProjects(response.data);
-            setFilteredProjects(response.data); // Actualiza también el estado filteredProjects
-          })
-          .catch((error) => {
-            console.error("Error fetching projects:", error);
-          });
-      } else {
-        ProjectService.getAllProjects()
-          .then((response) => {
-            setProjects(response.data);
-            setFilteredProjects(response.data); // Actualiza también el estado filteredProjects
-          })
-          .catch((error) => {
-            console.error("Error fetching projects:", error);
-          });
-      }
-    }
-  };
+
+  
+  const flattenProject = (project) => ({
+    name: project.name,
+    translator: project.translator
+      ? `${project.translator.name} ${project.translator.lastName}`
+      : "N/A",
+    taskType: project.taskType,
+    languagePair: project.languagePair
+      ? `${project.languagePair.sourceLanguage.codeIso.toUpperCase()} - ${project.languagePair.targetLanguage.codeIso.toUpperCase()}`
+      : "N/A",
+    sourceFlag: project.languagePair?.sourceLanguage?.flagCode || null,
+    targetFlag: project.languagePair?.targetLanguage?.flagCode || null,
+    status: project.status,
+    startingDate: project.startingDate,
+    finishedDate: project.finishedDate,
+  });  
+
+ const projectList = () => {
+  let fetchProjects;
+
+  if (localStorage.getItem("role") === "TRANSLATOR") {
+    fetchProjects = UserService.getMyProjects();
+  } else if (email) {
+    fetchProjects = UserService.getProjectsByUserEmail(email);
+  } else {
+    fetchProjects = ProjectService.getAllProjects();
+  }
+
+  fetchProjects
+    .then((response) => {
+      const transformedProjects = response.data.map(flattenProject);
+      setProjects(transformedProjects);
+      setFilteredProjects(transformedProjects);
+    })
+    .catch((error) => {
+      console.error("Error fetching projects:", error);
+    });
+};
+
+ /* console.log("project");
+  console.log(project);
+  */
+
+ 
+
 /*
   const handleFilter = (column, value) => {
     const lowercasedValue = typeof value === "string" ? value.toLowerCase() : value;
@@ -79,35 +93,19 @@ const toCamelCase = (str) => {
 const handleFilter = (column, value) => {
   if (!column || value == null) return;
 
-  const lowercasedValue = typeof value === "string" ? value.toLowerCase() : value;
+  let lowercasedValue = typeof value === "string" ? value.toLowerCase() : value;
   const camelCaseColumn = toCamelCase(column);
   const filtered = projects.filter((project) => {
+    
     let columnValue = project[camelCaseColumn];
 
-    // Si el valor es un objeto, intenta acceder a una propiedad representativa
-    if (typeof columnValue === "object" && columnValue !== null) {
-      columnValue = columnValue.name || columnValue.toString();
-    }
-
-    // Si es una fecha en formato ISO, conviértela a un formato legible
-    if (typeof columnValue === "string" && columnValue.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/)) {
-      columnValue = new Date(columnValue).toLocaleDateString();
-    }
-    if (camelCaseColumn === "languagePair") {
-      columnValue = project.languagePair?.sourceLanguage?.name; // Usa optional chaining para evitar errores si falta algún campo
-    }
-    
+    if(camelCaseColumn.includes("Date")){
+      lowercasedValue = lowercasedValue.replace(/\//,"-");
+    } 
 
     // Convierte a minúsculas solo si es un string
     const normalizedColumnValue = typeof columnValue === "string" ? columnValue.toLowerCase() : columnValue;
    
-    console.log(camelCaseColumn);
-    console.log(normalizedColumnValue);
-    console.log(lowercasedValue);
-    console.log(columnValue);
-
-    console.log(projects);
-
     return normalizedColumnValue?.includes(lowercasedValue);
   });
 

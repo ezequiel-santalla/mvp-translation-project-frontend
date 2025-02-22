@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import { Button } from "../Button/Button";
@@ -11,21 +12,17 @@ export const ProjectRow = ({ item, onDelete }) => {
     <tr>
       <td className="border border-gray-300 px-4 py-2">{item.name}</td>
       <td className="border border-gray-300 px-4 py-2">
-        {item.translator
-          ? `${item.translator.name} ${item.translator.lastName}`
-          : "N/A"}
+      {item.translator ? item.translator : "N/A"}
       </td>
       <td className="border border-gray-300 px-4 py-2">{item.taskType}</td>
       <td className="border border-gray-300 px-4 py-2">
-        <div className="flex justify-around gap-2">
-          <LanguageFlag countryCode={item.languagePair.sourceLanguage.flagCode} className="w-8 h-8" />
-          <span className="flex items-center">
-            {item.languagePair.sourceLanguage.codeIso.toUpperCase()} -{" "}
-            {item.languagePair.targetLanguage.codeIso.toUpperCase()}
-          </span>
-          <LanguageFlag countryCode={item.languagePair.targetLanguage.flagCode} className="w-8 h-8" />
-        </div>
-      </td>
+  <div className="flex justify-around gap-2">
+    {item.sourceFlag && <LanguageFlag countryCode={item.sourceFlag} className="w-8 h-8" />}
+    <span className="flex items-center">{item.languagePair}</span>
+    {item.targetFlag && <LanguageFlag countryCode={item.targetFlag} className="w-8 h-8" />}
+  </div>
+</td>
+
       <td className="border border-gray-300 px-4 py-2">{item.status}</td>
       <td className="border border-gray-300 px-4 py-2">
         {formatDateTime(item.startingDate)}
