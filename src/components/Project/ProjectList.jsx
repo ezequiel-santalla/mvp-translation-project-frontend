@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable valid-typeof */
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "../Button/Button";
@@ -49,15 +51,69 @@ export const ProjectList = () => {
       }
     }
   };
-
+/*
   const handleFilter = (column, value) => {
-    const lowercasedValue = value.toLowerCase();
+    const lowercasedValue = typeof value === "string" ? value.toLowerCase() : value;
+
+    const lowercasedColumn= column.toLowerCase();
+
     const filtered = projects.filter((project) => {
-      const columnValue = project[column]?.toString().toLowerCase();
+      const columnValue = project[lowercasedColumn]?.toString().toLowerCase();
+      console.log(lowercasedColumn);
+      console.log(lowercasedValue);
+      console.log(columnValue);
+
       return columnValue?.includes(lowercasedValue);
     });
-    setFilteredProjects(filtered);
+    setFilteredProjects(filtered); 
   };
+*/
+
+const toCamelCase = (str) => {
+  return str
+    .toLowerCase()
+    .trim()
+    .replace(/\s+(\w)/g, (match, letter) => letter.toUpperCase());
+};
+
+const handleFilter = (column, value) => {
+  if (!column || value == null) return;
+
+  const lowercasedValue = typeof value === "string" ? value.toLowerCase() : value;
+  const camelCaseColumn = toCamelCase(column);
+  const filtered = projects.filter((project) => {
+    let columnValue = project[camelCaseColumn];
+
+    // Si el valor es un objeto, intenta acceder a una propiedad representativa
+    if (typeof columnValue === "object" && columnValue !== null) {
+      columnValue = columnValue.name || columnValue.toString();
+    }
+
+    // Si es una fecha en formato ISO, conviértela a un formato legible
+    if (typeof columnValue === "string" && columnValue.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/)) {
+      columnValue = new Date(columnValue).toLocaleDateString();
+    }
+    if (camelCaseColumn === "languagePair") {
+      columnValue = project.languagePair?.sourceLanguage?.name; // Usa optional chaining para evitar errores si falta algún campo
+    }
+    
+
+    // Convierte a minúsculas solo si es un string
+    const normalizedColumnValue = typeof columnValue === "string" ? columnValue.toLowerCase() : columnValue;
+   
+    console.log(camelCaseColumn);
+    console.log(normalizedColumnValue);
+    console.log(lowercasedValue);
+    console.log(columnValue);
+
+    console.log(projects);
+
+    return normalizedColumnValue?.includes(lowercasedValue);
+  });
+
+  
+  setFilteredProjects(filtered);
+};
 
   const handleReset = () => {
     setFilteredProjects(projects); // Vuelve a mostrar todos los proyectos
