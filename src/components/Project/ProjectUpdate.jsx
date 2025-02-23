@@ -26,6 +26,7 @@ export const ProjectUpdate = () => {
       ProjectService.getProjectById(projectId)
         .then((response) => {
           const project = response.data;
+          console.log(project);
           setName(project.name);
           setDescription(project.description);
           setDeadline(format(new Date(project.deadline), "yyyy-MM-dd"));

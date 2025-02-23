@@ -22,6 +22,14 @@ class ProjectService {
   getProjectById(projectId) {
     return axios.get(`${PROJECT_BASE_REST_API_URL}/${projectId}`);
   }
+
+
+  //este es el metodo que agregue, lo que muestra la peticion es correcto pero hay problemas con el CORS
+  changeStatus(projectId, status) {
+    return axios.patch(`${PROJECT_BASE_REST_API_URL}/change-status?id=${projectId}&status=${status}`);
+  }
+  
+  
 }
 
 export default new ProjectService();

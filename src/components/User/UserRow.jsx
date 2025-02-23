@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
 import { Button } from "../Button/Button";
 
@@ -13,7 +14,12 @@ export const UserRow = ({ item, onDelete }) => (
         to={{
           pathname: `/users/projects/${item.email}`,
         }}
-        state={{ name: item.name, lastName: item.lastName, email: item.email, id: item.id }} // Pasa el email
+        state={{
+          name: item.name,
+          lastName: item.lastName,
+          email: item.email,
+          id: item.id,
+        }} // Pasa el email
         className="text-blue-500 hover:underline"
       >
         View Projects
@@ -27,12 +33,13 @@ export const UserRow = ({ item, onDelete }) => (
             colorClass="bg-yellow-500 text-white hover:bg-yellow-600"
           />
         </Link>
-
-        <Button
-          text="Delete"
-          colorClass="bg-red-500 text-white hover:bg-red-600"
-          onClick={() => onDelete(item.email)}
-        />
+        {["ADMIN", "ROOT"].includes(localStorage.getItem("role")) && (
+          <Button
+            text="Delete"
+            colorClass="bg-red-500 text-white hover:bg-red-600"
+            onClick={() => onDelete(item.email)}
+          />
+        )}
       </div>
     </td>
   </tr>

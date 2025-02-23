@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable valid-typeof */
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "../Button/Button";
@@ -19,9 +20,8 @@ export const ProjectList = () => {
   const location = useLocation();
   const { name, lastName, email } = location.state || {};
 
-
-  
   const flattenProject = (project) => ({
+    id: project.id, 
     name: project.name,
     translator: project.translator
       ? `${project.translator.name} ${project.translator.lastName}`
@@ -35,37 +35,35 @@ export const ProjectList = () => {
     status: project.status,
     startingDate: project.startingDate,
     finishedDate: project.finishedDate,
-  });  
+  });
 
- const projectList = () => {
-  let fetchProjects;
+  const projectList = () => {
+    let fetchProjects;
 
-  if (localStorage.getItem("role") === "TRANSLATOR") {
-    fetchProjects = UserService.getMyProjects();
-  } else if (email) {
-    fetchProjects = UserService.getProjectsByUserEmail(email);
-  } else {
-    fetchProjects = ProjectService.getAllProjects();
-  }
+    if (localStorage.getItem("role") === "TRANSLATOR") {
+      fetchProjects = UserService.getMyProjects();
+    } else if (email) {
+      fetchProjects = UserService.getProjectsByUserEmail(email);
+    } else {
+      fetchProjects = ProjectService.getAllProjects();
+    }
 
-  fetchProjects
-    .then((response) => {
-      const transformedProjects = response.data.map(flattenProject);
-      setProjects(transformedProjects);
-      setFilteredProjects(transformedProjects);
-    })
-    .catch((error) => {
-      console.error("Error fetching projects:", error);
-    });
-};
+    fetchProjects
+      .then((response) => {
+        const transformedProjects = response.data.map(flattenProject);
+        setProjects(transformedProjects);
+        setFilteredProjects(transformedProjects);
+      })
+      .catch((error) => {
+        console.error("Error fetching projects:", error);
+      });
+  };
 
- /* console.log("project");
+  /* console.log("project");
   console.log(project);
   */
 
- 
-
-/*
+  /*
   const handleFilter = (column, value) => {
     const lowercasedValue = typeof value === "string" ? value.toLowerCase() : value;
 
@@ -83,35 +81,37 @@ export const ProjectList = () => {
   };
 */
 
-const toCamelCase = (str) => {
-  return str
-    .toLowerCase()
-    .trim()
-    .replace(/\s+(\w)/g, (match, letter) => letter.toUpperCase());
-};
+  const toCamelCase = (str) => {
+    return str
+      .toLowerCase()
+      .trim()
+      .replace(/\s+(\w)/g, (match, letter) => letter.toUpperCase());
+  };
 
-const handleFilter = (column, value) => {
-  if (!column || value == null) return;
+  const handleFilter = (column, value) => {
+    if (!column || value == null) return;
 
-  let lowercasedValue = typeof value === "string" ? value.toLowerCase() : value;
-  const camelCaseColumn = toCamelCase(column);
-  const filtered = projects.filter((project) => {
-    
-    let columnValue = project[camelCaseColumn];
+    let lowercasedValue =
+      typeof value === "string" ? value.toLowerCase() : value;
+    const camelCaseColumn = toCamelCase(column);
+    const filtered = projects.filter((project) => {
+      let columnValue = project[camelCaseColumn];
 
-    if(camelCaseColumn.includes("Date")){
-      lowercasedValue = lowercasedValue.replace(/\//,"-");
-    } 
+      if (camelCaseColumn.includes("Date")) {
+        lowercasedValue = lowercasedValue.replace(/\//, "-");
+      }
 
-    // Convierte a minúsculas solo si es un string
-    const normalizedColumnValue = typeof columnValue === "string" ? columnValue.toLowerCase() : columnValue;
-   
-    return normalizedColumnValue?.includes(lowercasedValue);
-  });
+      // Convierte a minúsculas solo si es un string
+      const normalizedColumnValue =
+        typeof columnValue === "string"
+          ? columnValue.toLowerCase()
+          : columnValue;
 
-  
-  setFilteredProjects(filtered);
-};
+      return normalizedColumnValue?.includes(lowercasedValue);
+    });
+
+    setFilteredProjects(filtered);
+  };
 
   const handleReset = () => {
     setFilteredProjects(projects); // Vuelve a mostrar todos los proyectos
@@ -132,6 +132,21 @@ const handleFilter = (column, value) => {
       });
   });
 
+  const handleMarkAsCompleted = (projectId) => {
+    ProjectService.changeStatus(projectId, "FINISHED")
+      .then(() => {
+        projectList(); // Refresca la lista de proyectos
+      })
+      .catch((error) => {
+        console.error("Error changing status project:", error);
+        Swal.fire("Error!", "Failed to process status change", "error");
+      });
+  };
+  
+  
+
+  
+
   const headers = [
     "Name",
     "Translator",
@@ -141,6 +156,16 @@ const handleFilter = (column, value) => {
     "Starting Date",
     "Finished Date",
     "Actions",
+  ];
+
+  const filters = [
+    "Name",
+    "Translator",
+    "Task Type",
+    "Language Pair",
+    "Status",
+    "Starting Date",
+    "Finished Date",
   ];
 
   useEffect(() => {
@@ -155,13 +180,19 @@ const handleFilter = (column, value) => {
       <Title title={title} />
 
       <div className="flex justify-between items-center my-6">
-        <Link to="/projects/register">
-          <Button
-            text="Add Project"
-            colorClass="bg-green-500 text-white hover:bg-green-600"
-          />
-        </Link>
-        <FilterActions columns={headers} onFilter={handleFilter} onReset={handleReset} />
+        {["ADMIN", "ROOT"].includes(localStorage.getItem("role")) && (
+          <Link to="/projects/register">
+            <Button
+              text="Add Project"
+              colorClass="bg-green-500 text-white hover:bg-green-600"
+            />
+          </Link>
+        )}
+        <FilterActions
+          columns={filters}
+          onFilter={handleFilter}
+          onReset={handleReset}
+        />
       </div>
 
       <Table
@@ -169,6 +200,7 @@ const handleFilter = (column, value) => {
         data={filteredProjects} // Usa filteredProjects en lugar de projects
         RowComponent={ProjectRow}
         onDelete={handleDelete}
+        onComplete={handleMarkAsCompleted} // 🔹 Pasamos la función aquí
       />
     </section>
   );

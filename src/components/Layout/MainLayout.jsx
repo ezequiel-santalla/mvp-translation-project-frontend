@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { NavBar } from "../NavBar/NavBar";
 
 export const MainLayout = ({ children }) => (
