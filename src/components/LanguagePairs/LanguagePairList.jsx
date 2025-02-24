@@ -5,7 +5,7 @@ import { Title } from "../Title/Title";
 import { FilterActions } from "../FilterActions/FilterActions";
 import { Table } from "../Table/Table";
 import { LanguagePairRow } from "./LanguagePairRow";
-import { useDeleteConfirmation } from "../../hooks/useDeleteConfirmation";
+import { useConfirmationAction } from "../../hooks/useConfirmationAction";
 import LanguagePairService from "../../services/LanguagePairService";
 
 export const LanguagePairList = () => {
@@ -21,7 +21,7 @@ export const LanguagePairList = () => {
       });
   };
 
-  const { handleDelete } = useDeleteConfirmation((languagePairId) => {
+  const { handleDelete } = useConfirmationAction((languagePairId) => {
     LanguagePairService.deleteLanguagePair(languagePairId)
       .then(() => {
         languagePairList();
@@ -34,7 +34,7 @@ export const LanguagePairList = () => {
           "error"
         );
       });
-  });
+  }, "delete");
 
   const headers = [
     "Source Language",

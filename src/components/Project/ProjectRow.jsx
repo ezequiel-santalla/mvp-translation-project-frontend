@@ -52,23 +52,21 @@ export const ProjectRow = ({ item, onDelete, onComplete }) => {
               />
             </>
           )}
- {["TRANSLATOR"].includes(localStorage.getItem("role")) && (
-  <Button
-    text="Submit as Done"
-    colorClass="bg-green-500 text-white hover:bg-green-600"
-    onClick={() => {
-      console.log("handleMarkAsCompleted llamado con ID:", item.id);
-      console.log("onComplete llamado con ID:", item.id);
-            if (onComplete) {
-              onComplete(item.id);
-            } else {
-              console.error("onComplete no está definido");
-            }
-    }}
-  />
-)}
-
-
+          {["TRANSLATOR"].includes(localStorage.getItem("role")) && (
+            <Button
+              text="Submit as Done"
+              colorClass="bg-green-500 text-white hover:bg-green-600"
+              onClick={() => {
+                console.log("handleMarkAsCompleted llamado con ID:", item.id);
+                console.log("onComplete llamado con ID:", item.id);
+                if (onComplete) {
+                  onComplete(item.id);
+                } else {
+                  console.error("onComplete no está definido");
+                }
+              }}
+            />
+          )}
         </div>
       </td>
     </tr>

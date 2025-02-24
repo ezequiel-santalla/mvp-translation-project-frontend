@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { LogoutButton } from "../Button/LogoutButton";
 import verbaliaLogo from "../../img/verbaliaLogo.webp";
 
 export const NavBar = () => {
@@ -25,9 +26,11 @@ export const NavBar = () => {
               Language Pairs
             </Link>
           </li>
+          <li>
+              <LogoutButton />
+          </li>
         </ul>
       </nav>
     </header>
   );
 };
-

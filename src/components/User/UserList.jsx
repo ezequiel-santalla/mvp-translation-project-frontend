@@ -7,7 +7,7 @@ import { Title } from "../Title/Title";
 import { FilterActions } from "../FilterActions/FilterActions";
 import { Table } from "../Table/Table";
 import { UserRow } from "../User/UserRow";
-import { useDeleteConfirmation } from "../../hooks/useDeleteConfirmation";
+import { useConfirmationAction } from "../../hooks/useConfirmationAction";
 import UserService from "../../services/UserService";
 
 export const UserList = () => {
@@ -75,16 +75,22 @@ export const UserList = () => {
       setFilteredUsers(users); // Vuelve a mostrar todos los proyectos
     };
 
-  const { handleDelete } = useDeleteConfirmation((userEmail) => {
-    UserService.deleteUser(userEmail)
-      .then(() => {
-        userList();
-      })
-      .catch((error) => {
-        console.error("Error deleting user:", error);
-        Swal.fire("Error!", "There was an issue deleting the user.", "error");
-      });
-  });
+
+const { handleAction: handleDelete } = useConfirmationAction((userId) => {
+  UserService.deleteUser(userId)
+    .then(() => {
+      userList();
+    })
+    .catch((error) => {
+      console.error("Error deleting user:", error);
+      Swal.fire(
+        "Error!",
+        "There was an issue deleting user.",
+        "error"
+      );
+    });
+}, "delete");
+
 
   const headers = [
     "Name",

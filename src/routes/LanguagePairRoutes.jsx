@@ -5,7 +5,9 @@ import { LanguagePairRegister } from "../components/LanguagePairs/LanguagePairRe
 
 export const LanguagePairRoutes = () => (
   <>
+
     <Route path={ROUTES.LANGUAGE_PAIRS} element={<LanguagePairList />} />
     <Route path={ROUTES.LANGUAGE_PAIR_REGISTER} element={<LanguagePairRegister />} />
+    
   </>
 );

@@ -26,8 +26,10 @@ class ProjectService {
   changeStatus(projectId, status) {
     return axios.patch(`${PROJECT_BASE_REST_API_URL}/change-status?id=${projectId}&status=${status}`);
   }
-  
-  
+
+  finishProject(projectId) {
+    return axios.patch(`${PROJECT_BASE_REST_API_URL}/finish?id=${projectId}`);
+  }
 }
 
 export default new ProjectService();

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import Flag from "react-world-flags";
 
 export const LanguageFlag = ({ countryCode, className }) => {

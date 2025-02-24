@@ -8,7 +8,7 @@ import { Title } from "../Title/Title";
 import { FilterActions } from "../FilterActions/FilterActions";
 import { Table } from "../Table/Table";
 import { ProjectRow } from "./ProjectRow";
-import { useDeleteConfirmation } from "../../hooks/useDeleteConfirmation";
+import { useConfirmationAction } from "../../hooks/useConfirmationAction";
 import ProjectService from "../../services/ProjectService";
 import UserService from "../../services/UserService";
 import Swal from "sweetalert2";
@@ -116,8 +116,9 @@ export const ProjectList = () => {
   const handleReset = () => {
     setFilteredProjects(projects); // Vuelve a mostrar todos los proyectos
   };
+  
 
-  const { handleDelete } = useDeleteConfirmation((projectId) => {
+  const { handleAction: handleDelete } = useConfirmationAction((projectId) => {
     ProjectService.deleteProject(projectId)
       .then(() => {
         projectList();
@@ -130,18 +131,20 @@ export const ProjectList = () => {
           "error"
         );
       });
-  });
+  }, "delete");
 
-  const handleMarkAsCompleted = (projectId) => {
-    ProjectService.changeStatus(projectId, "FINISHED")
+  const { handleAction: handleMarkAsCompleted } = useConfirmationAction((projectId) => {
+    ProjectService.finishProject(projectId)
       .then(() => {
         projectList(); // Refresca la lista de proyectos
       })
       .catch((error) => {
         console.error("Error changing status project:", error);
-        Swal.fire("Error!", "Failed to process status change", "error");
+        Swal.fire("Error!", "Failed to process status change", 
+          "error"
+        );
       });
-  };
+  }, "finish");
   
   
 
