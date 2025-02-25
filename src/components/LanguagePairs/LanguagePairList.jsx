@@ -52,12 +52,15 @@ export const LanguagePairList = () => {
       <Title title="Language Pair List" />
 
       <div className="flex justify-between items-center my-6">
+      {["ADMIN", "ROOT"].includes(localStorage.getItem("role")) && (
+
         <Link to="/language-pairs/register">
           <Button
             text="Add Language Pair"
             colorClass="bg-green-500 text-white hover:bg-green-600"
           />
         </Link>
+        )}
         <FilterActions columns={headers}/>
       </div>
 

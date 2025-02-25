@@ -1,13 +1,14 @@
 import axios from "../configs/axiosConfig";
 
-const LOGIN_BASE_REST_API_URL = "/auth-user/login";
+const LOG_BASE_REST_API_URL = "/auth-user";
 
 class LoginService {
   async postLogin(loginData) {
     try {
-      const response = await axios.post(LOGIN_BASE_REST_API_URL, loginData);
+      const response = await axios.post(`${LOG_BASE_REST_API_URL}/login`, loginData);
       const token = response.data;
       localStorage.setItem("jwtToken", token); // Guarda el token en localStorage
+      
       return token;
     } catch (error) {
       if (error.response) {
@@ -19,7 +20,12 @@ class LoginService {
       }
     }
   }
+
+  async postLogout(){
+    return axios.post(`${LOG_BASE_REST_API_URL}/login`);
+  }
 }
+
 
 export default new LoginService();
 

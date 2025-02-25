@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode"; // Importar jwt-decode
@@ -21,7 +22,6 @@ export const Login = () => {
       console.log("Formulario enviado con éxito", { email, password });
 
       const token = await LoginService.postLogin({ email, password });
-      localStorage.setItem("token", token); // Guarda el token en localStorage
 
       // Decodificar el token para obtener el role
       const decodedToken = jwtDecode(token);

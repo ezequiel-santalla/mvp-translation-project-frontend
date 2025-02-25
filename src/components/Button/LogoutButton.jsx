@@ -19,7 +19,7 @@ export const LogoutButton = () => {
       cancelButtonText: "Cancel",
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem("token");
+        localStorage.removeItem("jwtToken");
         localStorage.removeItem("role");
         navigate("/");
       }
