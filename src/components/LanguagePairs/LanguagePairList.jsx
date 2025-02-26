@@ -7,6 +7,7 @@ import { Table } from "../Table/Table";
 import { LanguagePairRow } from "./LanguagePairRow";
 import { useConfirmationAction } from "../../hooks/useConfirmationAction";
 import LanguagePairService from "../../services/LanguagePairService";
+import Swal from "sweetalert2";
 
 export const LanguagePairList = () => {
   const [languagePairs, setLanguagePairs] = useState([]);
@@ -52,16 +53,17 @@ export const LanguagePairList = () => {
       <Title title="Language Pair List" />
 
       <div className="flex justify-between items-center my-6">
-      {["ADMIN", "ROOT"].includes(localStorage.getItem("role")) && (
-
-        <Link to="/language-pairs/register">
-          <Button
-            text="Add Language Pair"
-            colorClass="bg-green-500 text-white hover:bg-green-600"
-          />
-        </Link>
+        {["ADMIN", "ROOT"].includes(localStorage.getItem("role")) && (
+          <Link to="/language-pairs/register">
+            <Button
+              text="Add Language Pair"
+              colorClass="bg-green-500 text-white hover:bg-green-600"
+            />
+          </Link>
         )}
-        <FilterActions columns={headers}/>
+        <div className="ml-auto">
+          <FilterActions columns={headers} />
+        </div>
       </div>
 
       <Table
@@ -71,5 +73,5 @@ export const LanguagePairList = () => {
         onDelete={handleDelete}
       />
     </section>
-  )
-}
+  );
+};

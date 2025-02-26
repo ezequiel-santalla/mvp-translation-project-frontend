@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
 /* eslint-disable valid-typeof */
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "../Button/Button";
@@ -21,7 +20,7 @@ export const ProjectList = () => {
   const { name, lastName, email } = location.state || {};
 
   const flattenProject = (project) => ({
-    id: project.id, 
+    id: project.id,
     name: project.name,
     translator: project.translator
       ? `${project.translator.name} ${project.translator.lastName}`
@@ -59,28 +58,6 @@ export const ProjectList = () => {
       });
   };
 
-  /* console.log("project");
-  console.log(project);
-  */
-
-  /*
-  const handleFilter = (column, value) => {
-    const lowercasedValue = typeof value === "string" ? value.toLowerCase() : value;
-
-    const lowercasedColumn= column.toLowerCase();
-
-    const filtered = projects.filter((project) => {
-      const columnValue = project[lowercasedColumn]?.toString().toLowerCase();
-      console.log(lowercasedColumn);
-      console.log(lowercasedValue);
-      console.log(columnValue);
-
-      return columnValue?.includes(lowercasedValue);
-    });
-    setFilteredProjects(filtered); 
-  };
-*/
-
   const toCamelCase = (str) => {
     return str
       .toLowerCase()
@@ -116,7 +93,6 @@ export const ProjectList = () => {
   const handleReset = () => {
     setFilteredProjects(projects); // Vuelve a mostrar todos los proyectos
   };
-  
 
   const { handleAction: handleDelete } = useConfirmationAction((projectId) => {
     ProjectService.deleteProject(projectId)
@@ -140,15 +116,11 @@ export const ProjectList = () => {
       })
       .catch((error) => {
         console.error("Error changing status project:", error);
-        Swal.fire("Error!", "Failed to process status change", 
+        Swal.fire("Error!", "Failed to process status change",
           "error"
         );
       });
   }, "finish");
-  
-  
-
-  
 
   const headers = [
     "Name",
@@ -191,11 +163,13 @@ export const ProjectList = () => {
             />
           </Link>
         )}
-        <FilterActions
-          columns={filters}
-          onFilter={handleFilter}
-          onReset={handleReset}
-        />
+        <div className="ml-auto">
+          <FilterActions
+            columns={filters}
+            onFilter={handleFilter}
+            onReset={handleReset}
+          />
+        </div>
       </div>
 
       <Table
