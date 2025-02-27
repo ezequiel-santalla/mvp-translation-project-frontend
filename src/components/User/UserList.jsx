@@ -21,11 +21,12 @@ export const UserList = () => {
   const userList = () => {
     let fetchUsers;
 
-    if (localStorage.getItem("role") === "TRANSLATOR") {
+    const role = localStorage.getItem("role");
+    if (role === "TRANSLATOR") {
       fetchUsers = UserService.getMyUser();
-    } else {
+    } else if (role === "ADMIN" || role === "ROOT"){
       fetchUsers = UserService.getAllUsers();
-    }
+    } else return;
 
     fetchUsers
       .then((response) => {

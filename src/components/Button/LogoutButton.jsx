@@ -1,30 +1,27 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
-import React from "react";
-
-
+import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export const LogoutButton = () => {
+  const { logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "You will be logged out.",
+      title: "¿Estás seguro?",
+      text: "Vas a cerrar sesión.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, log out",
-      cancelButtonText: "Cancel",
+      confirmButtonText: "Sí, cerrar sesión",
+      cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem("jwtToken");
-        localStorage.removeItem("role");
+        logout();
         navigate("/");
       }
     });
   };
+
   return (
     <button
       onClick={handleLogout}

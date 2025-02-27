@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
 import { Button } from "../Button/Button";
 import { LanguageFlag } from "../LanguageFlag/LanguageFlag";

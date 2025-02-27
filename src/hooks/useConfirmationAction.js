@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 
 export const useConfirmationAction = (onConfirm, actionType = "delete") => {
-  const handleAction = (itemEmail) => {
+  const handleAction = async (itemEmail) => {
     let config = {
       delete: {
         title: "Are you sure?",

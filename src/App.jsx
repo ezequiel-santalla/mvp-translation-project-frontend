@@ -1,4 +1,6 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthProvider, AuthContext } from "./components/context/AuthContext";
 import { UserRoutes } from "./routes/UserRoutes";
 import { ProjectRoutes } from "./routes/ProjectRoutes";
 import { LanguagePairRoutes } from "./routes/LanguagePairRoutes";
@@ -8,27 +10,44 @@ import { Login } from "./components/Login/Login";
 import { NotFound } from "./components/NotFound/NoutFound";
 import { Footer } from "./components/Footer/Footer";
 
+const AppContent = () => {
+  const { isAuthenticated } = useContext(AuthContext);
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <NavBar />
+
+      {!isAuthenticated && (
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-900 bg-opacity-50">
+          <Login />
+        </div>
+      )}
+
+      <main className="flex-grow">
+        <Routes>
+          {!isAuthenticated ? (
+            <Route path="*" element={<Navigate to={ROUTES.LOGIN} replace />} />
+          ) : (
+            <>
+              {UserRoutes()}
+              {ProjectRoutes()}
+              {LanguagePairRoutes()}
+              <Route path="*" element={<NotFound />} />
+            </>
+          )}
+        </Routes>
+      </main>
+
+      <Footer />
+    </div>
+  );
+};
+
+
 const App = () => (
-  <BrowserRouter>
-    <NavBar />
-    <Routes>
-      {/* Rutas sin layout */}
-      <Route path={ROUTES.LOGIN} element={<Login />} />
-      {/* Rutas con layout */}
-      <Route
-        path="/*"
-        element={
-          <Routes>
-            {UserRoutes()}
-            {ProjectRoutes()}
-            {LanguagePairRoutes()}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        }
-      />
-    </Routes>
-    <Footer />
-  </BrowserRouter>
+  <AuthProvider>
+    <AppContent />
+  </AuthProvider>
 );
 
 export default App;

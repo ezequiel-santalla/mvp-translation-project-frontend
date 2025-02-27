@@ -37,15 +37,19 @@ export const ProjectList = () => {
   });
 
   const projectList = () => {
-    let fetchProjects;
 
-    if (localStorage.getItem("role") === "TRANSLATOR") {
+    let fetchProjects;
+    const role = localStorage.getItem("role");
+    
+    if (role === "TRANSLATOR") {
       fetchProjects = UserService.getMyProjects();
-    } else if (email) {
-      fetchProjects = UserService.getProjectsByUserEmail(email);
-    } else {
-      fetchProjects = ProjectService.getAllProjects();
-    }
+    } else if (role === "ADMIN" || role === "ROOT") {
+      if (email) {
+        fetchProjects = UserService.getProjectsByUserEmail(email);
+      } else {
+        fetchProjects = ProjectService.getAllProjects();
+      }
+    } else return;
 
     fetchProjects
       .then((response) => {
@@ -109,18 +113,19 @@ export const ProjectList = () => {
       });
   }, "delete");
 
-  const { handleAction: handleMarkAsCompleted } = useConfirmationAction((projectId) => {
-    ProjectService.finishProject(projectId)
-      .then(() => {
-        projectList(); // Refresca la lista de proyectos
-      })
-      .catch((error) => {
-        console.error("Error changing status project:", error);
-        Swal.fire("Error!", "Failed to process status change",
-          "error"
-        );
-      });
-  }, "finish");
+  const { handleAction: handleMarkAsCompleted } = useConfirmationAction(
+    (projectId) => {
+      ProjectService.finishProject(projectId)
+        .then(() => {
+          projectList(); // Refresca la lista de proyectos
+        })
+        .catch((error) => {
+          console.error("Error changing status project:", error);
+          Swal.fire("Error!", "Failed to process status change", "error");
+        });
+    },
+    "finish"
+  );
 
   const headers = [
     "Name",

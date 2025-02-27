@@ -45,7 +45,11 @@ export const LanguagePairList = () => {
   ];
 
   useEffect(() => {
+
+    if (localStorage.getItem("jwtToken")) {
+      console.log("token almacenado: "+localStorage.getItem("token"));
     languagePairList();
+    }
   }, []);
 
   return (
