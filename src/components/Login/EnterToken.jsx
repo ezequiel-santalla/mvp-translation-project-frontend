@@ -73,16 +73,13 @@ export const Login = () => {
 
       <div className="flex justify-between mt-4 text-sm">
         <button
-        onClick={()=>{navigate("./ForgotPassword")
-          console.log("deberia ir a forgot password");
-        }
-        }
+          onClick={handleSubmit}
           className="text-blue-500 hover:underline"
         >
           Forgot your password?
         </button>
         <button
-          onClick={()=>navigate("./forgotPassword")}
+          onClick={handleSubmit}
           className="text-blue-500 hover:underline"
         >
           I have a token

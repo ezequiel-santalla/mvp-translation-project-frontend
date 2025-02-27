@@ -7,6 +7,8 @@ import { LanguagePairRoutes } from "./routes/LanguagePairRoutes";
 import { ROUTES } from "./routes/paths";
 import { NavBar } from "./components/NavBar/NavBar";
 import { Login } from "./components/Login/Login";
+import { ForgotPassword } from "./components/Login/ForgotPassword"; 
+import { VerifyToken } from "./components/Login/VerifyToken";
 import { NotFound } from "./components/NotFound/NoutFound";
 import { Footer } from "./components/Footer/Footer";
 
@@ -26,7 +28,10 @@ const AppContent = () => {
       <main className="flex-grow">
         <Routes>
           {!isAuthenticated ? (
-            <Route path="*" element={<Navigate to={ROUTES.LOGIN} replace />} />
+            <>
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/verify-token" element={<VerifyToken />} />
+            </>
           ) : (
             <>
               {UserRoutes()}
@@ -42,7 +47,6 @@ const AppContent = () => {
     </div>
   );
 };
-
 
 const App = () => (
   <AuthProvider>
