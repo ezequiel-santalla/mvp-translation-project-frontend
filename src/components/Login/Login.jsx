@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import LoginService from "../../services/LoginService";
 import { useAuth } from "../context/AuthContext";
-import Swal from "sweetalert2";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -30,7 +29,7 @@ export const Login = () => {
       const decodedToken = jwtDecode(token);
       const role = decodedToken.role; // Ajusta según la estructura de tu token
 
-      login(token, role); 
+      login(token, role);
 
       console.log("Rol del usuario:", role); // Debugging
       console.log("Token decodificado:", decodedToken); // Debugging

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "../Button/Button";
 import { Title } from "../Title/Title";
 import { FilterActions } from "../FilterActions/FilterActions";
@@ -14,9 +14,6 @@ import Swal from "sweetalert2";
 export const UserList = () => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
-
-  const location = useLocation();
-  const { name, lastName, email } = location.state || {};
 
   const userList = () => {
     let fetchUsers;
