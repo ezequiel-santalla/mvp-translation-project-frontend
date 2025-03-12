@@ -33,7 +33,7 @@ export const UserRow = ({ item, onDelete }) => (
             colorClass="bg-yellow-500 text-white hover:bg-yellow-600"
           />
         </Link>
-        {["ADMIN", "ROOT"].includes(localStorage.getItem("role")) && (
+        {["ROLE_ADMIN", "ROLE_ROOT"].includes(localStorage.getItem("role")) && (
           <Button
             text="Delete"
             colorClass="bg-red-500 text-white hover:bg-red-600"

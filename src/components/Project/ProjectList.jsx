@@ -24,7 +24,7 @@ export const ProjectList = () => {
     name: project.name,
     translator: project.translator
       ? `${project.translator.name} ${project.translator.lastName}`
-      : "N/A",
+      : "",
     taskType: project.taskType,
     languagePair: project.languagePair
       ? `${project.languagePair.sourceLanguage.codeIso.toUpperCase()} - ${project.languagePair.targetLanguage.codeIso.toUpperCase()}`
@@ -41,9 +41,9 @@ export const ProjectList = () => {
     let fetchProjects;
     const role = localStorage.getItem("role");
     
-    if (role === "TRANSLATOR") {
+    if (role === "ROLE_TRANSLATOR") {
       fetchProjects = UserService.getMyProjects();
-    } else if (role === "ADMIN" || role === "ROOT") {
+    } else if (role === "ROLE_ADMIN" || role === "ROLE_ROOT") {
       if (email) {
         fetchProjects = UserService.getProjectsByUserEmail(email);
       } else {
@@ -160,7 +160,7 @@ export const ProjectList = () => {
       <Title title={title} />
 
       <div className="flex justify-between items-center my-6">
-        {["ADMIN", "ROOT"].includes(localStorage.getItem("role")) && (
+        {["ROLE_ADMIN", "ROLE_ROOT"].includes(localStorage.getItem("role")) && (
           <Link to="/projects/register">
             <Button
               text="Add Project"

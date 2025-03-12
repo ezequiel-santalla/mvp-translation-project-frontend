@@ -5,9 +5,9 @@ import { jwtDecode } from "jwt-decode";
 import LoginService from "../../services/LoginService";
 import { useAuth } from "../context/AuthContext";
 
-export const Login = () => {
+export const EnterToken = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [code, setCode] = useState("");
   const [error, setError] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -15,15 +15,16 @@ export const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!email || !password) {
+    if (!email || !code) {
       setError("Por favor ingrese su correo electrónico y contraseña.");
       return;
     }
 
     try {
-      console.log("Formulario enviado con éxito", { email, password });
+      console.log("Formulario enviado con éxito", { email, code });
 
-      const token = await LoginService.postLogin({ email, password });
+      ///cambiar al metodo correcto --------------------------------------------
+      const token = await LoginService.postLogin({ email, code });
 
       // Decodificar el token para obtener el rol
       const decodedToken = jwtDecode(token);
@@ -47,8 +48,10 @@ export const Login = () => {
   };
 
   return (
+    <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-900 bg-opacity-50">
+
     <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-      <h2 className="text-2xl font-bold mb-4">Login</h2>
+      <h2 className="text-2xl font-bold mb-4">Enter Your Verification Code</h2>
       {error && <p className="text-red-500">{error}</p>}
       <input
         type="email"
@@ -59,30 +62,22 @@ export const Login = () => {
       />
       <input
         type="password"
-        placeholder="Password"
+        placeholder="Code"
         className="w-full p-2 border rounded mb-3"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        value={code}
+        onChange={(e) => setCode(e.target.value)}
       />
-      <button
-        onClick={handleSubmit}
-        className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-      >
-        Login
-      </button>
-
-      <div className="flex justify-between mt-4 text-sm">
-        <button
+  <button
           onClick={handleSubmit}
-          className="text-blue-500 hover:underline"
+          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 mb-3"
         >
-          Forgot your password?
+          Enviar
         </button>
         <button
-          onClick={handleSubmit}
-          className="text-blue-500 hover:underline"
+          onClick={() => navigate("/login")}
+          className="w-full bg-gray-300 text-black py-2 rounded hover:bg-gray-400"
         >
-          I have a token
+          Cancelar
         </button>
       </div>
     </div>

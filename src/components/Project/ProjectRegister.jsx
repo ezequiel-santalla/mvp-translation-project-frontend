@@ -4,6 +4,7 @@ import { Title } from "../Title/Title";
 import { Button } from "../Button/Button";
 import { format } from "date-fns";
 import ProjectService from "../../services/ProjectService";
+import { LanguagePairSelector } from "../Selectors/LanguagePairSelector";
 
 export const ProjectRegister = () => {
   const [name, setName] = useState("");
@@ -11,23 +12,23 @@ export const ProjectRegister = () => {
   const [deadline, setDeadline] = useState("");
   const [filePath, setFilePath] = useState("");
   const [taskType, setTaskType] = useState("");
+  const [languagePair, setLanguagePair] = useState("");
   const [sourceLanguage, setSourceLanguage] = useState("");
   const [targetLanguage, setTargetLanguage] = useState("");
-  const [paymentType, setPaymentType] = useState("");
+  const [projectPayment, setProjectPayment] = useState("");
   const [flatFee, setFlatFee] = useState("");
   const [rate, setRate] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [paymentType, setPaymentType] = useState("");
   const navigate = useNavigate();
 
   const handleProjectSubmit = (e) => {
     e.preventDefault();
 
-    const formattedDeadline = format(new Date(deadline), "yyyy-MM-dd'T'HH:mm:ss");
-
-    const languagePair = {
-      sourceLanguage,
-      targetLanguage
-    };
+    const formattedDeadline = format(
+      new Date(deadline),
+      "yyyy-MM-dd'T'HH:mm:ss"
+    );
 
     const project = {
       name,
@@ -35,18 +36,25 @@ export const ProjectRegister = () => {
       deadline: formattedDeadline,
       filePath,
       taskType,
-      languagePair,
-      paymentType,
-      flatFee: paymentType === "Flat Fee" ? flatFee : null,
-      rate: paymentType === "Rate Based" ? rate : null,
-      quantity: paymentType === "Rate Based" ? quantity : null,
+      languagePair: {
+        sourceLanguage: languagePair.sourceLanguage,
+        targetLanguage: languagePair.targetLanguage,
+      },
+      projectPayment:
+        projectPayment === "Flat Fee"
+          ? { type: "FlatFee", cost: flatFee }
+          : { type: "RateBased", rate, paymentType, quantity },
     };
 
     ProjectService.registerProject(project)
       .then(() => {
         navigate("/projects");
+        console.log("Projectbeing sent:", project);
+        console.log("Project Payment being sent:", projectPayment);
       })
       .catch((error) => {
+        console.log("Projectbeing sent:", project);
+        console.log("Project Payment being sent:", projectPayment);
         console.log(error.response.data);
       });
   };
@@ -155,75 +163,80 @@ export const ProjectRegister = () => {
 
         <div>
           <label className="block text-sm font-medium" htmlFor="sourceLanguage">
-            Source Language
+            Language Pair
           </label>
-          <input
-            id="sourceLanguage"
-            type="text"
-            className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-            value={sourceLanguage}
-            onChange={(e) => setSourceLanguage(e.target.value)}
-            placeholder="Enter source language"
-            required
+          <LanguagePairSelector
+            onSelect={({ sourceLanguage, targetLanguage }) =>
+              setLanguagePair({ sourceLanguage, targetLanguage })
+            }
           />
         </div>
-
-        <div>
-          <label className="block text-sm font-medium" htmlFor="targetLanguage">
-            Target Language
-          </label>
-          <input
-            id="targetLanguage"
-            type="text"
-            className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-            value={targetLanguage}
-            onChange={(e) => setTargetLanguage(e.target.value)}
-            placeholder="Enter target language"
-            required
-          />
-        </div>
-
         <div>
           <label
             className="block text-sm font-medium text-gray-700"
-            htmlFor="paymentType"
+            htmlFor="projectPayment"
           >
-            Payment Type
+            Payment Method
           </label>
           <select
-            id="paymentType"
+            id="projectPayment"
             className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-            value={paymentType}
-            onChange={(e) => setPaymentType(e.target.value)}
+            value={projectPayment}
+            onChange={(e) => setProjectPayment(e.target.value)}
             required
           >
-            <option value="">Select payment type</option>
+            <option value="" disabled>
+              &lt;Select payment method&gt;
+            </option>
             <option value="Flat Fee">Flat Fee</option>
             <option value="Rate Based">Rate Based</option>
           </select>
         </div>
 
-        {paymentType === "Flat Fee" && (
+        {projectPayment === "Flat Fee" && (
           <div>
             <label
               className="block text-sm font-medium text-gray-700"
-              htmlFor="flatFee"
+              htmlFor="cost"
             >
-              Flat Fee
+              Cost
             </label>
             <input
-              id="flatFee"
+              id="cost"
               type="number"
               className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
               value={flatFee}
               onChange={(e) => setFlatFee(e.target.value)}
-              placeholder="Enter flat fee"
+              placeholder="Enter cost"
               required
             />
           </div>
         )}
-        {paymentType === "Rate Based" && (
+        {projectPayment === "Rate Based" && (
           <>
+            <div>
+              <label
+                className="block text-sm font-medium text-gray-700"
+                htmlFor="paymentType"
+              >
+                Payment Type
+              </label>
+              <select
+                id="paymentType"
+                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                value={paymentType}
+                onChange={(e) => setPaymentType(e.target.value)}
+                required
+              >
+                <option value="" disabled>
+                  &lt;Select payment type&gt;
+                </option>
+                <option value="PER_WORD">Per word</option>
+                <option value="PER_HOUR">Per hour</option>
+                <option value="PER_MINUTE">Per minute</option>
+                <option value="PER_PAGE">Per page</option>
+              </select>
+            </div>
             <div>
               <label
                 className="block text-sm font-medium text-gray-700"

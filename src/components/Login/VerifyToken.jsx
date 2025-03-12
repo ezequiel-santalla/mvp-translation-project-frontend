@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthService from "../../services/AuthService"; 
+import AuthService from "../../services/AuthUserService"; 
 
 export const VerifyToken = () => {
   const [email, setEmail] = useState("");
@@ -18,7 +18,7 @@ export const VerifyToken = () => {
     }
 
     try {
-      const isValid = await AuthService.verifyResetToken(email, token);
+      const isValid = await AuthService.verifyValidToken(email, token);
       if (isValid) {
         navigate("/reset-password", { state: { email } });
       } else {
@@ -30,6 +30,8 @@ export const VerifyToken = () => {
   };
 
   return (
+    <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-900 bg-opacity-50">
+
     <div className="bg-white p-6 rounded-lg shadow-lg w-96">
       <h2 className="text-2xl font-bold mb-4">Verificar código</h2>
       {error && <p className="text-red-500">{error}</p>}
@@ -49,10 +51,17 @@ export const VerifyToken = () => {
       />
       <button
         onClick={handleVerify}
-        className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+        className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 mb-3"
       >
         Verificar
       </button>
+      <button
+          onClick={() => navigate("/login")}
+          className="w-full bg-gray-300 text-black py-2 rounded hover:bg-gray-400"
+        >
+          Cancelar
+        </button>
+    </div>
     </div>
   );
 };

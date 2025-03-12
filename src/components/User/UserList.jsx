@@ -19,12 +19,13 @@ export const UserList = () => {
     let fetchUsers;
 
     const role = localStorage.getItem("role");
-    if (role === "TRANSLATOR") {
-      fetchUsers = UserService.getMyUser();
-    } else if (role === "ADMIN" || role === "ROOT"){
+  
+    if (role === "ROLE_TRANSLATOR") { 
+            fetchUsers = UserService.getMyUser();
+    } else if (role === "ROLE_ADMIN" || role === "ROLE_ROOT"){
+
       fetchUsers = UserService.getAllUsers();
     } else return;
-
     fetchUsers
       .then((response) => {
         const userData = Array.isArray(response.data) ? response.data : [response.data]; // Normaliza a array
@@ -32,6 +33,7 @@ export const UserList = () => {
         setFilteredUsers(userData);
       })
       .catch((error) => {
+        console.log(error)
         console.error("Error fetching projects:", error);
       });
   };
@@ -110,18 +112,29 @@ export const UserList = () => {
       <Title title="User List" />
 
       <div className="flex justify-between items-center my-6">
-        {["ADMIN", "ROOT"].includes(localStorage.getItem("role")) && (
-          <Link to="/users/register">
-            <Button
-              text="Add User"
-              colorClass="bg-green-500 text-white hover:bg-green-600"
-            />
-          </Link>
-        )}
-        <div className="ml-auto">
-          <FilterActions columns={filters} onFilter={handleFilter} onReset={handleReset} />
-        </div>
-      </div>
+  <div className="flex gap-4">
+    {["ROLE_ROOT"].includes(localStorage.getItem("role")) && (
+      <Link to="/users/register">
+        <Button
+          text="Add User"
+          colorClass="bg-green-500 text-white hover:bg-green-600"
+        />
+      </Link>
+    )}
+    {["ROLE_ADMIN", "ROLE_ROOT"].includes(localStorage.getItem("role")) && (
+      <Link to="/generate-pre-register-code">
+        <Button
+          text="Invite"
+          colorClass="bg-blue-500 text-white hover:bg-blue-600"
+        />
+      </Link>
+    )}
+  </div>
+  <div>
+    <FilterActions columns={filters} onFilter={handleFilter} onReset={handleReset} />
+  </div>
+</div>
+
 
       <Table
         headers={headers}

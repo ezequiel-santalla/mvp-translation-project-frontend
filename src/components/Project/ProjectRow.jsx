@@ -5,15 +5,34 @@ import { Link } from "react-router-dom";
 import { Button } from "../Button/Button";
 import { LanguageFlag } from "../LanguageFlag/LanguageFlag";
 
-export const ProjectRow = ({ item, onDelete, onComplete }) => {
+export const ProjectRow = ({ item, onDelete, onComplete, onAssign }) => {
   const formatDateTime = (date) =>
     date ? format(new Date(date), "yyyy/MM/dd HH:mm:ss") : "N/A";
+
   return (
     <tr>
       <td className="border border-gray-300 px-4 py-2">{item.name}</td>
       <td className="border border-gray-300 px-4 py-2">
-        {item.translator ? item.translator : "N/A"}
+        {item.translator ? (
+          item.translator
+        ) : (
+          <div className="flex justify-center">
+            <Button
+              text="Assign"
+              colorClass="bg-blue-500 text-white hover:bg-blue-600"
+              onClick={() => {
+                console.log(`Assigning translator for project ID: ${item.id}`);
+                if (onAssign) {
+                  onAssign(item.id);
+                } else {
+                  console.error("onAssign function is not defined");
+                }
+              }}
+            />
+          </div>
+        )}
       </td>
+
       <td className="border border-gray-300 px-4 py-2">{item.taskType}</td>
       <td className="border border-gray-300 px-4 py-2">
         <div className="flex justify-around gap-2">
@@ -36,7 +55,9 @@ export const ProjectRow = ({ item, onDelete, onComplete }) => {
       </td>
       <td className="border border-gray-300 px-4 py-2">
         <div className="flex justify-around gap-2">
-          {["ADMIN", "ROOT"].includes(localStorage.getItem("role")) && (
+          {["ROLE_ADMIN", "ROLE_ROOT"].includes(
+            localStorage.getItem("role")
+          ) && (
             <>
               <Link to={`/projects/update/${item.id}`}>
                 <Button
@@ -52,7 +73,7 @@ export const ProjectRow = ({ item, onDelete, onComplete }) => {
               />
             </>
           )}
-          {["TRANSLATOR"].includes(localStorage.getItem("role")) && (
+          {["ROLE_TRANSLATOR"].includes(localStorage.getItem("role")) && (
             <Button
               text="Submit as Done"
               colorClass="bg-green-500 text-white hover:bg-green-600"

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Title } from "../Title/Title";
 import { Button } from "../Button/Button";
 import LanguagePairService from "../../services/LanguagePairService";
+import { LanguageSelector } from "../Selectors/LanguageSelector";
 
 export const LanguagePairRegister = () => {
   const [sourceLanguage, setSourceLanguage] = useState("");
@@ -42,15 +43,9 @@ export const LanguagePairRegister = () => {
           >
             Source Language
           </label>
-          <input
-            id="sourceLanguage"
-            type="text"
-            value={sourceLanguage}
-            onChange={(e) => setSourceLanguage(e.target.value)}
-            placeholder="Enter Source Language"
-            autoComplete="source-language"
-            className="w-full mt-3 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          />
+          <LanguageSelector 
+          onSelect={setSourceLanguage} 
+          excludedLanguage={targetLanguage}/>
         </div>
         <div>
           <label
@@ -58,17 +53,13 @@ export const LanguagePairRegister = () => {
             htmlFor="targetLanguage"
           >
             Target Language
-          </label>
-          <input
-            id="targetLanguage"
-            type="text"
-            value={targetLanguage}
-            onChange={(e) => setTargetLanguage(e.target.value)}
-            placeholder="Enter Target Language"
-            autoComplete="target-language"
-            className="w-full mt-3 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          />
+            </label>
+          <LanguageSelector 
+          onSelect={setTargetLanguage}
+          excludedLanguage={sourceLanguage}/>
+
         </div>
+       
 
         <div className="flex justify-end space-x-4">
           <Link to="/language-pairs">

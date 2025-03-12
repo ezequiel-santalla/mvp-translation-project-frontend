@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import LoginService from "../../services/LoginService";
 import { useAuth } from "../context/AuthContext";
 
+
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,7 +36,7 @@ export const Login = () => {
       console.log("Token decodificado:", decodedToken); // Debugging
 
       // Redirige según el rol
-      if (role === "ADMIN" || role === "ROOT") {
+      if (role === "ROLE_ADMIN" || role === "ROLE_ROOT") {
         navigate("/projects");
       } else {
         navigate("/users/me/projects");
@@ -73,7 +74,7 @@ export const Login = () => {
 
       <div className="flex justify-between mt-4 text-sm">
         <button
-        onClick={()=>{navigate("./ForgotPassword")
+        onClick={()=>{navigate("/forgot-password")
           console.log("deberia ir a forgot password");
         }
         }
@@ -82,7 +83,7 @@ export const Login = () => {
           Forgot your password?
         </button>
         <button
-          onClick={()=>navigate("./forgotPassword")}
+          onClick={()=>navigate("/enter-token")}
           className="text-blue-500 hover:underline"
         >
           I have a token
