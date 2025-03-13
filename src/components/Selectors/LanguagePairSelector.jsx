@@ -19,13 +19,19 @@ export const LanguagePairSelector = ({ onSelect }) => {
   }, []);
 
   const handleChange = (event) => {
-    console.log("selectedLanguagePair: "+selectedLanguagePair);
-    const selected = event.target.value;
-    setSelectedLanguagePair(selected);
+    const selected = JSON.parse(event.target.value); // Convertimos el string a objeto
+    console.log("selectedLanguagePair:", selected);
+  
+    setSelectedLanguagePair(event.target.value); // Guardamos la versión string en el estado
+  
     if (onSelect) {
-      onSelect(selected);
+      onSelect({
+        sourceLanguage: selected.sourceLanguage.value, // Solo enviamos el nombre
+        targetLanguage: selected.targetLanguage.value
+      });
     }
   };
+  
 
   return (
     <select
@@ -35,7 +41,7 @@ export const LanguagePairSelector = ({ onSelect }) => {
     >
       <option value="" disabled>&lt;Select a language pair&gt;</option>
       {allLanguagePairs.map((item) => (
-        <option key={item.id} value={item}>
+        <option key={item.id} value={JSON.stringify(item)}>
           {`${item.sourceLanguage.value} - ${item.targetLanguage.value}`}
         </option>
       ))}

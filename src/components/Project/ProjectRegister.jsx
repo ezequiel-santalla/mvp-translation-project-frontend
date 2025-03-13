@@ -12,9 +12,9 @@ export const ProjectRegister = () => {
   const [deadline, setDeadline] = useState("");
   const [filePath, setFilePath] = useState("");
   const [taskType, setTaskType] = useState("");
-  const [languagePair, setLanguagePair] = useState("");
-  const [sourceLanguage, setSourceLanguage] = useState("");
-  const [targetLanguage, setTargetLanguage] = useState("");
+  const [languagePair, setLanguagePair] = useState({sourceLanguage: "", targetLanguage: ""});
+  //const [sourceLanguage, setSourceLanguage] = useState("");
+ // const [targetLanguage, setTargetLanguage] = useState("");
   const [projectPayment, setProjectPayment] = useState("");
   const [flatFee, setFlatFee] = useState("");
   const [rate, setRate] = useState("");
@@ -125,7 +125,7 @@ export const ProjectRegister = () => {
           </label>
           <input
             id="filePath"
-            type="text"
+            type="file"
             className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
             value={filePath}
             onChange={(e) => setFilePath(e.target.value)}
@@ -166,8 +166,15 @@ export const ProjectRegister = () => {
             Language Pair
           </label>
           <LanguagePairSelector
-            onSelect={({ sourceLanguage, targetLanguage }) =>
+            onSelect={({ sourceLanguage, targetLanguage }) =>{
+              console.log("source language "+sourceLanguage);
               setLanguagePair({ sourceLanguage, targetLanguage })
+              console.log("source language "+sourceLanguage);
+
+              console.log("language pair"+languagePair);
+
+            }
+              
             }
           />
         </div>
