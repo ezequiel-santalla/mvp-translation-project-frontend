@@ -40,10 +40,10 @@ export const ProjectList = () => {
 
     let fetchProjects;
     const role = localStorage.getItem("role");
-    
+    console.log("Proyectos encontados: "+ProjectService.getAllProjects());
+
     if (role === "ROLE_TRANSLATOR") {
       fetchProjects = UserService.getMyProjects();
-      console.log("Proyectos encontados: "+fetchProjects);
     } else if (role === "ROLE_ADMIN" || role === "ROLE_ROOT") {
       if (email) {
         fetchProjects = UserService.getProjectsByUserEmail(email);
