@@ -2,7 +2,8 @@ import axios from "axios";
 
 // Crear instancia de Axios con configuración base
 const api = axios.create({
-  baseURL: "http://localhost:8080",
+  //baseURL: "http://localhost:8080",
+  baseURL: "https://7ecb-190-189-40-246.ngrok-free.app",
   headers: {
     "Content-Type": "application/json", // Formato JSON por defecto
   },
